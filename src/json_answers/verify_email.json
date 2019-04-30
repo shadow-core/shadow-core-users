@@ -1,0 +1,14 @@
+{
+  "error_no_verification_token": {
+    "code": 1,
+    "message": "You must provide verification token"
+  },
+  "error_verification_token_old": {
+    "code": 404,
+    "message": "Email verification token is incorrect or outdated"
+  },
+  "success": {
+    "code": 100,
+    "message": "Your email is now verified"
+  }
+}

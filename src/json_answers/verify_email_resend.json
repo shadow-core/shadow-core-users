@@ -1,0 +1,26 @@
+{
+  "error_email_is_length": {
+    "code": 1,
+    "message": "Please, provide email. This cannot be empty"
+  },
+  "error_email_format": {
+    "code": 2,
+    "message": "Please, provide correct email"
+  },
+  "error_no_user": {
+    "code": 3,
+    "message": "User with this email does not exist"
+  },
+  "error_verified": {
+    "code": 4,
+    "message": "This email is verified already"
+  },
+  "error_too_much_requests": {
+    "code": 429,
+    "message": "Too much requests for this email. Please try again later"
+  },
+  "success": {
+    "code": 100,
+    "message": "Verification email sent"
+  }
+}

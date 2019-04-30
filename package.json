@@ -1,0 +1,26 @@
+{
+  "name": "express-core-users",
+  "version": "0.0.1",
+  "description": "Express core for users",
+  "author": "Gray Hound",
+  "license": "ISC",
+  "scripts": {
+    "build": "npx babel src --out-dir lib --source-maps inline --copy-files",
+    "prepublish": "npm run build"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "crypto": "^1.0.1",
+    "express-core-basic": "file:../express-core-basic",
+    "express-validator": "^5.3.1",
+    "mongoose": "^5.5.4",
+    "validator": "^10.11.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.3",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.4.3"
+  }
+}
