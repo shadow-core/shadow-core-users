@@ -65,6 +65,7 @@ export default class ExpressCoreUsers extends ExpressCoreBasic {
         if (!user.verificationResendAmount) {
             return false;
         }
+        /* @TODO make timeout configurable */
         if ((user.verificationResendRequestDate.getTime() + 3600*1000) > Date.now() && user.verificationResendAmount >= 3) {
             return true;
         }

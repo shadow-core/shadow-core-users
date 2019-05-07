@@ -12,6 +12,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "crypto": "^1.0.1",
+    "express-async-handler": "^1.1.4",
     "express-core-basic": "file:../express-core-basic",
     "express-validator": "^5.3.1",
     "mongoose": "^5.5.4",
