@@ -1,36 +1,37 @@
-let mongoose = require("mongoose");
-let chai = require('chai');
-let chaiHttp = require('chai-http');
-let chaiSubset = require('chai-subset');
-let should = chai.should();
-let expect = chai.expect;
-
 import UserModel from '../models/user';
+
+const mongoose = require('mongoose');
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const chaiSubset = require('chai-subset');
+
+const should = chai.should();
+const { expect } = chai;
 
 chai.use(chaiHttp);
 chai.use(chaiSubset);
 
-let token = '';
+const token = '';
 
-let accountId = null;
-let userId = null;
+const accountId = null;
+const userId = null;
 
 export default function ExpressCoreUsersTests_Signup(server) {
-    describe('User signup endpoint', () => {
-        describe('GET /users/signup', () => {
-            it('must return 404 on get request', (done) => {
-                chai.request(server)
-                    .get('/api/v1/users/signup')
-                    .send()
-                    .end((err, res) => {
-                        res.should.have.status(404);
-                        res.body.should.have.property('success').eq(false);
-                        res.body.should.have.property('type').eq('endpoint');
-                        done();
-                    });
-            });
+  describe('User signup endpoint', () => {
+    describe('GET /users/signup', () => {
+      it('must return 404 on get request', (done) => {
+        chai.request(server)
+          .get('/api/v1/users/signup')
+          .send()
+          .end((err, res) => {
+            res.should.have.status(404);
+            res.body.should.have.property('success').eq(false);
+            res.body.should.have.property('type').eq('endpoint');
+            done();
+          });
+      });
 
-            /*
+      /*
             it('should return error if there is no email', (done) => {
                 var data = {};
                 chai.request(server)
@@ -194,8 +195,6 @@ export default function ExpressCoreUsersTests_Signup(server) {
                     });
             });
              */
-
-        });
-
     });
+  });
 }
