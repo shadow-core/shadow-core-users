@@ -1,4 +1,4 @@
-import { BasicController } from 'express-core-basic';
+import { BasicController } from 'shadow-core-basic';
 import ExpressCoreUsers from '../ExpressCoreUsers';
 // import sendVerificationEmail from '../../mails/verification_email';
 // import sendResetPasswordRequestEmail from '../../mails/password_reset_email';
@@ -8,30 +8,36 @@ import ExpressCoreUsers from '../ExpressCoreUsers';
  * Used for sign-up and login.
  */
 export default class UsersController extends BasicController {
-  constructor() {
+  /**
+   * Constructor. Pass model to it.
+   *
+   * @param {Object} models
+   */
+  constructor(models) {
     super();
-    this.core = new ExpressCoreUsers();
+    this.models = models;
+    this.core = new ExpressCoreUsers(this.models);
   }
 
   /**
-     * Sign up API endpoint.
-     * This endpoint checks that email is unique and is email, passwords are not empty and equal.
-     *
-     * The result will be either error with code and error message or success.
-     *
-     * This will also create account for user.
-     * @param req
-     * @param res
-     */
+   * Sign up API endpoint.
+   * This endpoint checks that email is unique and is email, passwords are not empty and equal.
+   *
+   * The result will be either error with code and error message or success.
+   *
+   * This will also create account for user.
+   * @param req
+   * @param res
+   */
   async signupUserAction(req, res) {
     const errors = this.core.getValidationResult(req);
     if (!errors.isEmpty()) {
       return this.returnInvalidErrors(errors.array(), res);
     }
 
-    const _action_params = this.core.getMatchedData(req);
+    const actionParams = this.core.getMatchedData(req);
 
-    const newUser = await this.core.ProcessSignUpUser(_action_params.email, _action_params.password);
+    await this.core.ProcessSignUpUser(actionParams.email, actionParams.password);
     // sendVerificationEmail(newUser);
     return this.returnSuccess(this.core.getJsonResponse('signup_user', 'success'), res);
   }
@@ -49,9 +55,9 @@ export default class UsersController extends BasicController {
       return this.returnInvalidErrors(errors.array(), res);
     }
 
-    const _action_params = this.core.getMatchedData(req);
+    const actionParams = this.core.getMatchedData(req);
 
-    const user = await this.core.getUserByEmail(_action_params.email);
+    const user = await this.core.getUserByEmail(actionParams.email);
 
     // return error if too much requests
     if (this.core.checkTooMuchRequests(user)) {
@@ -77,10 +83,10 @@ export default class UsersController extends BasicController {
       return this.returnInvalidErrors(errors.array(), res);
     }
 
-    const _action_params = this.core.getMatchedData(req);
+    const actionParams = this.core.getMatchedData(req);
 
     // find user by token
-    const user = await this.core.getUserByVerificationToken(_action_params.verification_token);
+    const user = await this.core.getUserByVerificationToken(actionParams.verification_token);
     if (!user) {
       return this.returnNotFoundError(res, 'verification_token', 'Email verification token is incorrect or outdated');
     }
@@ -102,9 +108,9 @@ export default class UsersController extends BasicController {
       return this.returnInvalidErrors(errors.array(), res);
     }
 
-    const _action_params = this.core.getMatchedData(req);
+    const actionParams = this.core.getMatchedData(req);
 
-    const user = await this.core.getUserByEmail(_action_params.email);
+    const user = await this.core.getUserByEmail(actionParams.email);
 
     if (this.core.checkTooMuchResetPasswordRequests(user)) {
       return this.returnError(this.core.getJsonResponse('reset_password_request', 'error_reset_password_too_much_requests'), res, 429);
@@ -129,14 +135,14 @@ export default class UsersController extends BasicController {
       return this.returnInvalidErrors(errors.array(), res);
     }
 
-    const _action_params = this.core.getMatchedData(req);
+    const actionParams = this.core.getMatchedData(req);
 
-    const user = await this.core.getUserByPasswordResetToken(_action_params.token);
+    const user = await this.core.getUserByPasswordResetToken(actionParams.token);
     if (!user) {
       return this.returnNotFoundError(res, 'reset_password_token', 'Token is incorrect or already has been used');
     }
 
-    await this.core.updateUserPassword(user, _action_params.password);
+    await this.core.updateUserPassword(user, actionParams.password);
 
     return this.returnSuccess(this.core.getJsonResponse('reset_password', 'success'), res);
   }
@@ -154,9 +160,9 @@ export default class UsersController extends BasicController {
       return this.returnInvalidErrors(errors.array(), res);
     }
 
-    const _action_params = this.core.getMatchedData(req);
+    const actionParams = this.core.getMatchedData(req);
 
-    const user = await this.core.getUserByPasswordResetToken(_action_params.token);
+    const user = await this.core.getUserByPasswordResetToken(actionParams.token);
     if (!user) {
       return this.returnNotFoundError(res, 'reset_password_token', 'Token is incorrect or already has been used');
     }

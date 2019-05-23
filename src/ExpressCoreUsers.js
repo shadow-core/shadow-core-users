@@ -1,5 +1,4 @@
-import { ExpressCoreBasic } from 'express-core-basic';
-import UserModel from './models/user';
+import { ExpressCoreBasic } from 'shadow-core-basic';
 
 const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
@@ -9,12 +8,13 @@ const bcrypt = require('bcryptjs');
  */
 export default class ExpressCoreUsers extends ExpressCoreBasic {
   /**
-   * Constructor.
+   * Prepare json responses and get list if models.
    *
-   * Add all JSON answers we need.
+   * @param {Object} models
    */
-  constructor() {
+  constructor(models) {
     super();
+    this.models = models;
     this.addJsonResponses('signup_user', require('./json_answers/signup_user'));
     this.addJsonResponses('verify_email_resend', require('./json_answers/verify_email_resend'));
     this.addJsonResponses('verify_email', require('./json_answers/verify_email'));
@@ -26,11 +26,13 @@ export default class ExpressCoreUsers extends ExpressCoreBasic {
   /**
    * Find user by email.
    *
+   * @TODO this is got it be moved/removed to schema
+   *
    * @param email
    * @returns {Promise.<void>}
    */
   async getUserByEmail(email) {
-    const user = await UserModel.findByEmail(email).exec();
+    const user = await this.models.User.findByEmail(email).exec();
     return user;
   }
 
@@ -45,7 +47,7 @@ export default class ExpressCoreUsers extends ExpressCoreBasic {
     const verificationCode = crypto.randomBytes(64).toString('hex');
 
     /* @TODO Make this method as model method */
-    const newUser = new UserModel({
+    const newUser = new this.models.User({
       email,
       password_hash: bcrypt.hashSync(password, 10),
       isEmailVerified: false,
@@ -66,7 +68,8 @@ export default class ExpressCoreUsers extends ExpressCoreBasic {
       return false;
     }
     /* @TODO make timeout configurable */
-    if ((user.verificationResendRequestDate.getTime() + 3600 * 1000) > Date.now() && user.verificationResendAmount >= 3) {
+    if ((user.verificationResendRequestDate.getTime() + 3600 * 1000) > Date.now()
+      && user.verificationResendAmount >= 3) {
       return true;
     }
     return false;
@@ -76,29 +79,30 @@ export default class ExpressCoreUsers extends ExpressCoreBasic {
    * Update some data for user for resend verification
    *
    * @param user
-   * @returns {UserModel}
+   * @returns {Object}
    */
   async updateResendVerification(user) {
+    const result = user;
     const lastRequestDate = user.verificationResendRequestDate;
-    user.verificationResendRequestDate = Date.now();
-    user.verificationResendAmount += 1;
+    result.verificationResendRequestDate = Date.now();
+    result.verificationResendAmount += 1;
     /* @TODO make timeout configurable and move it at some method */
     if (lastRequestDate && (lastRequestDate.getTime() + 3600 * 1000 < Date.now())) {
-      user.verificationResendAmount = 1;
+      result.verificationResendAmount = 1;
     }
 
-    await user.save();
+    await result.save();
   }
 
   /**
      * Find user by verification token.
      *
      * @param {string} verificationToken
-     * @returns {UserModel}
+     * @returns {Object}
      */
   async getUserByVerificationToken(verificationToken) {
     /* @TODO make this a model method */
-    const user = await UserModel.findOne(
+    const user = await this.models.User.findOne(
       {
         verificationCode: verificationToken,
         isEmailVerified: false,
@@ -114,17 +118,18 @@ export default class ExpressCoreUsers extends ExpressCoreBasic {
      * @returns {Promise}
      */
   async prepareResetPassword(user) {
+    const result = user;
     const lastRequestDate = user.resetPasswordRequestDate;
-    user.resetPasswordIsRequested = true;
-    user.resetPasswordRequestDate = Date.now();
-    user.resetPasswordToken = crypto.randomBytes(64).toString('hex');
-    user.resetPasswordRequestsAmount += 1;
+    result.resetPasswordIsRequested = true;
+    result.resetPasswordRequestDate = Date.now();
+    result.resetPasswordToken = crypto.randomBytes(64).toString('hex');
+    result.resetPasswordRequestsAmount += 1;
     /* @TODO make timeout configurable */
     if (lastRequestDate && (lastRequestDate.getTime() + 3600 * 1000 < Date.now())) {
-      user.resetPasswordRequestsAmount = 1;
+      result.resetPasswordRequestsAmount = 1;
     }
 
-    await user.save();
+    await result.save();
   }
 
   /**
@@ -138,7 +143,8 @@ export default class ExpressCoreUsers extends ExpressCoreBasic {
       return false;
     }
     /* @TODO make timeout configurable */
-    if ((user.resetPasswordRequestDate.getTime() + 3600 * 1000) > Date.now() && user.resetPasswordRequestsAmount >= 3) {
+    if ((user.resetPasswordRequestDate.getTime() + 3600 * 1000) > Date.now()
+      && user.resetPasswordRequestsAmount >= 3) {
       return true;
     }
     return false;
@@ -149,10 +155,10 @@ export default class ExpressCoreUsers extends ExpressCoreBasic {
      * @TODO make this a model method.
      *
      * @param token
-     * @return {UserModel}
+     * @return {Object}
      */
   async getUserByPasswordResetToken(token) {
-    const user = UserModel.findOne({
+    const user = this.models.User.findOne({
       resetPasswordToken: token,
       resetPasswordIsRequested: true,
     }).exec();
@@ -167,11 +173,12 @@ export default class ExpressCoreUsers extends ExpressCoreBasic {
      * @return {Promise}
      */
   async updateUserPassword(user, password) {
-    user.password_hash = bcrypt.hashSync(password, 10);
-    user.resetPasswordIsRequested = false;
-    user.resetPasswordRequestDate = null;
-    user.resetPasswordRequestsAmount = 0;
-    user.resetPasswordToken = null;
-    await user.save();
+    const result = user;
+    result.password_hash = bcrypt.hashSync(password, 10);
+    result.resetPasswordIsRequested = false;
+    result.resetPasswordRequestDate = null;
+    result.resetPasswordRequestsAmount = 0;
+    result.resetPasswordToken = null;
+    await result.save();
   }
 }

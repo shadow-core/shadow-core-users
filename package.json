@@ -1,7 +1,7 @@
 {
-  "name": "express-core-users",
-  "version": "0.0.1",
-  "description": "Express core for users",
+  "name": "shadow-core-users",
+  "version": "0.0.2",
+  "description": "Users package for Shadow-core project.",
   "author": "Gray Hound",
   "license": "ISC",
   "scripts": {
@@ -15,9 +15,9 @@
     "bcryptjs": "^2.4.3",
     "crypto": "^1.0.1",
     "express-async-handler": "^1.1.4",
-    "express-core-basic": "file:../express-core-basic",
     "express-validator": "^5.3.1",
     "mongoose": "^5.5.4",
+    "shadow-core-basic": "0.0.1",
     "validator": "^10.11.0"
   },
   "devDependencies": {

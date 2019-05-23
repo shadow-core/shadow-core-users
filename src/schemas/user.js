@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
-const { Schema } = mongoose;
+const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+const UserSchema = new Schema({
   email: {
     type: 'String',
     unique: true,
@@ -53,24 +53,25 @@ const userSchema = new Schema({
   },
 }, {
   collection: 'users',
+  autoCreate: true,
 });
 
-userSchema.methods.checkEmailVerified = function () {
-  const diff_time = Date.now() - this.registrationDate.getTime();
-  const max_diff_time = 7 * 24 * 3600 * 1000;
-  if (diff_time > max_diff_time
+UserSchema.methods.checkEmailVerified = () => {
+  const diffTime = Date.now() - this.registrationDate.getTime();
+  const maxDiffTime = 7 * 24 * 3600 * 1000;
+  if (diffTime > maxDiffTime
         && this.isEmailVerified === false) {
     return false;
   }
   return true;
 };
 
-userSchema.statics.findByEmail = function (email, cb) {
-  return this.findOne({ email, isDeleted: { $ne: true } }, cb);
+UserSchema.statics.findByEmail = (email, cb) => {
+  return this.findOne({ email, isDeleted: { $ne: true } }, cb).exec();
 };
 
-userSchema.statics.findById = function (id, cb) {
+UserSchema.statics.findById = (id, cb) => {
   return this.findOne({ _id: id }, cb);
 };
 
-export default mongoose.model('UserModel', userSchema);
+export default UserSchema;

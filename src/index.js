@@ -2,20 +2,22 @@
 import ExpressCoreUsers from './ExpressCoreUsers';
 import ExpressCoreUsersValidators from './validators';
 import UsersController from './controllers/user';
-import UserModel from './models/user';
+import UserSchema from './schemas/user';
 import UserRouter from './router/users';
 
 // tests
-import ExpressCoreUsersTests_Signup from './tests/signup';
+import ExpressCoreUsersTestsSignup from './tests/signup';
 
 export {
   // export main classes
   ExpressCoreUsers,
   ExpressCoreUsersValidators,
   UsersController,
-  UserModel,
+  // Schema
+  UserSchema,
+  // Router
   UserRouter,
 
   // export tests
-  ExpressCoreUsersTests_Signup,
+  ExpressCoreUsersTestsSignup,
 };

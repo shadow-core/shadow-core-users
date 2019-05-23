@@ -8,14 +8,14 @@ const asyncHandler = require('express-async-handler');
  *
  * @param router
  */
-export default function (router) {
-  const usersController = new ExpressCoreUsersController();
+export default function (router, models) {
+  const usersController = new ExpressCoreUsersController(models);
 
   // sign up user
   router
     .route('/users/signup')
     .post(
-      ExpressCoreUsersValidators.signupUserValidator,
+      ExpressCoreUsersValidators.signupUserValidator(models),
       asyncHandler(usersController.signupUserAction.bind(usersController)),
     );
 
@@ -23,7 +23,7 @@ export default function (router) {
   router
     .route('/users/verify_email/resend')
     .post(
-      ExpressCoreUsersValidators.verifyEmailResendValidator,
+      ExpressCoreUsersValidators.verifyEmailResendValidator(models),
       asyncHandler(usersController.verifyEmailResendAction.bind(usersController)),
     );
 
@@ -31,7 +31,7 @@ export default function (router) {
   router
     .route('/users/verify_email')
     .post(
-      ExpressCoreUsersValidators.verifyEmailValidator,
+      ExpressCoreUsersValidators.verifyEmailValidator(models),
       asyncHandler(usersController.verifyEmailAction.bind(usersController)),
     );
 
@@ -39,7 +39,7 @@ export default function (router) {
   router
     .route('/users/reset_password/request')
     .post(
-      ExpressCoreUsersValidators.resetPasswordRequestValidator,
+      ExpressCoreUsersValidators.resetPasswordRequestValidator(models),
       asyncHandler(usersController.resetPasswordRequestAction.bind(usersController)),
     );
 
@@ -47,7 +47,7 @@ export default function (router) {
   router
     .route('/users/reset_password')
     .post(
-      ExpressCoreUsersValidators.resetPasswordValidator,
+      ExpressCoreUsersValidators.resetPasswordValidator(models),
       asyncHandler(usersController.resetPasswordAction.bind(usersController)),
     );
 
@@ -55,7 +55,7 @@ export default function (router) {
   router
     .route('/users/reset_password/check')
     .post(
-      ExpressCoreUsersValidators.resetPasswordCheckValidator,
+      ExpressCoreUsersValidators.resetPasswordCheckValidator(models),
       asyncHandler(usersController.resetPasswordCheckAction.bind(usersController)),
     );
 }

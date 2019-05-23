@@ -1,8 +1,15 @@
+const signupUserValidator = require('./signupUserValidator').default;
+const verifyEmailResendValidator = require('./verifyEmailResendValidator').default;
+const verifyEmailValidator = require('./verifyEmailValidator').default;
+const resetPasswordRequestValidator = require('./resetPasswordRequestValidator').default;
+const resetPasswordValidator = require('./resetPasswordValidator').default;
+const resetPasswordCheckValidator = require('./resetPasswordCheckValidator').default;
+
 export default {
-  signupUserValidator: require('./signupUserValidator').default,
-  verifyEmailResendValidator: require('./verifyEmailResendValidator').default,
-  verifyEmailValidator: require('./verifyEmailValidator').default,
-  resetPasswordRequestValidator: require('./resetPasswordRequestValidator').default,
-  resetPasswordValidator: require('./resetPasswordValidator').default,
-  resetPasswordCheckValidator: require('./resetPasswordCheckValidator').default,
+  signupUserValidator,
+  verifyEmailResendValidator,
+  verifyEmailValidator,
+  resetPasswordRequestValidator,
+  resetPasswordValidator,
+  resetPasswordCheckValidator,
 };

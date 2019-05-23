@@ -1,6 +1,3 @@
-import UserModel from '../models/user';
-
-const mongoose = require('mongoose');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const chaiSubset = require('chai-subset');
@@ -11,9 +8,9 @@ const { expect } = chai;
 chai.use(chaiHttp);
 chai.use(chaiSubset);
 
-let verification_token = '';
+export default function TestExpressCoreUsersEmailVerification(server, models) {
+  let verificationToken = '';
 
-export default function TestExpressCoreUsersEmailVerification() {
   describe('User email verification endpoint', () => {
     describe('POST /users/verify_email', () => {
       it('must return 404 on get request', (done) => {
@@ -29,11 +26,11 @@ export default function TestExpressCoreUsersEmailVerification() {
       });
 
       it('user data must be correct', (done) => {
-        UserModel.findOne({ email: 'test@sensorlab.io' }).exec().then((user) => {
+        models.User.findOne({ email: 'test@sensorlab.io' }).exec().then((user) => {
           user._id.should.exist;
           user.isEmailVerified.should.equal(false);
           user.verificationCode.should.exist;
-          verification_token = user.verificationCode;
+          verificationToken = user.verificationCode;
           done();
         });
       });
@@ -70,7 +67,7 @@ export default function TestExpressCoreUsersEmailVerification() {
       });
 
       it('must return success for correct token', (done) => {
-        const data = { verification_token };
+        const data = { verification_token: verificationToken };
         chai.request(server)
           .post('/api/basic/users/verify_email')
           .send(data)
@@ -84,7 +81,7 @@ export default function TestExpressCoreUsersEmailVerification() {
       });
 
       it('it must return an error now since token was used', (done) => {
-        const data = { verification_token };
+        const data = { verification_token: verificationToken };
         chai.request(server)
           .post('/api/basic/users/verify_email')
           .send(data)
@@ -100,7 +97,7 @@ export default function TestExpressCoreUsersEmailVerification() {
       });
 
       it('user data must be correct', (done) => {
-        UserModel.findOne({ email: 'test@sensorlab.io' }).exec().then((user) => {
+        models.User.findOne({ email: 'test@sensorlab.io' }).exec().then((user) => {
           user._id.should.exist;
           user.isEmailVerified.should.equal(true);
           user.verificationCode.should.exist;
