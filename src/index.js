@@ -7,6 +7,9 @@ import UserRouter from './router/users';
 
 // tests
 import ExpressCoreUsersTestsSignup from './tests/signup';
+import ExpressCoreUsersTestsEmailVerification from './tests/emailVerification';
+import ExpressCoreUsersTestsResendVerificationEmail from './tests/resendVerificationEmail';
+import ExpressCoreUsersTestsResetPassword from './tests/resetPassword';
 
 export {
   // export main classes
@@ -20,4 +23,7 @@ export {
 
   // export tests
   ExpressCoreUsersTestsSignup,
+  ExpressCoreUsersTestsEmailVerification,
+  ExpressCoreUsersTestsResendVerificationEmail,
+  ExpressCoreUsersTestsResetPassword,
 };
