@@ -14,18 +14,24 @@ export default function (models) {
       },
       custom: {
         errorMessage: jsonAnswers.error_email_is_not_unique,
-        options: (value) => new Promise((resolve, reject) => {
-          models.User.findByEmail(value, (err, user) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(user);
+        options: (value) => {
+          return new Promise((resolve, reject) => {
+            models.User.findByEmail(value, (err, user) => {
+              if (err) {
+                reject(err);
+              } else {
+                resolve(user);
+              }
+            });
+          }).then((user) => {
+            if (user) {
+              return false;
             }
+            return true;
+          }).catch((error) => {
+            console.log(error);
           });
-        }).then((user) => {
-          if (user) return false;
-          return true;
-        }),
+        },
       },
       trim: true,
     },

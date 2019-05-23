@@ -56,22 +56,25 @@ const UserSchema = new Schema({
   autoCreate: true,
 });
 
-UserSchema.methods.checkEmailVerified = () => {
-  const diffTime = Date.now() - this.registrationDate.getTime();
-  const maxDiffTime = 7 * 24 * 3600 * 1000;
-  if (diffTime > maxDiffTime
-        && this.isEmailVerified === false) {
-    return false;
-  }
-  return true;
+UserSchema.methods = {
+  checkEmailVerified() {
+    const diffTime = Date.now() - this.registrationDate.getTime();
+    const maxDiffTime = 7 * 24 * 3600 * 1000;
+    if (diffTime > maxDiffTime
+      && this.isEmailVerified === false) {
+      return false;
+    }
+    return true;
+  },
 };
 
-UserSchema.statics.findByEmail = (email, cb) => {
-  return this.findOne({ email, isDeleted: { $ne: true } }, cb).exec();
-};
-
-UserSchema.statics.findById = (id, cb) => {
-  return this.findOne({ _id: id }, cb);
+UserSchema.statics = {
+  findByEmail(email, cb) {
+    return this.findOne({ email, isDeleted: { $ne: true } }, cb).exec();
+  },
+  findById(id, cb) {
+    return this.findOne({ _id: id }, cb);
+  },
 };
 
 export default UserSchema;
