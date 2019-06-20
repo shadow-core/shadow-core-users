@@ -61,7 +61,7 @@ export default class UsersController extends BasicController {
 
     // return error if too much requests
     if (this.core.checkTooMuchRequests(user)) {
-      return this.returnError(this.core.getJsonResponse('verify_email_resend', 'too_much_requests'), res, 429);
+      return this.returnError(this.core.getJsonResponse('verify_email_resend', 'error_too_much_requests'), res, 429);
     }
 
     // send email, add counter and return success

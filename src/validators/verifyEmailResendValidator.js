@@ -14,6 +14,9 @@ export default function (models) {
       },
       custom: {
         options: (value) => new Promise(((resolve, reject) => {
+          if (!value) {
+            resolve(null);
+          }
           models.User.findByEmail(value, (err, user) => {
             if (err) {
               reject(err);
@@ -27,8 +30,12 @@ export default function (models) {
               throw new Error(JSON.stringify(jsonAnswers.error_verified));
             }
             return true;
+          } else {
+            if (!value) {
+              return true;
+            }
+            throw new Error(JSON.stringify(jsonAnswers.error_no_user));
           }
-          throw new Error(JSON.stringify(jsonAnswers.error_verified));
         }),
       },
       trim: true,

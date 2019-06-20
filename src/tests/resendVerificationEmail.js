@@ -36,7 +36,6 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server) {
             res.body.errors.should.be.a('array');
             res.body.errors.should.containSubset([{ code: 1, param: 'email' }]);
             res.body.errors.should.containSubset([{ code: 2, param: 'email' }]);
-            res.body.errors.should.containSubset([{ code: 3, param: 'email' }]);
             done();
           });
       });

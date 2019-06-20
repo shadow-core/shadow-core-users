@@ -61,7 +61,7 @@ export default function TestExpressCoreUsersEmailVerification(server, models) {
             res.body.should.have.property('message');
             res.body.should.have.property('success').eq(false);
             res.body.should.have.property('type').eq('object');
-            res.body.should.have.property('object_type').eq('verification_token');
+            res.body.should.have.property('objectType').eq('verification_token');
             done();
           });
       });
@@ -91,7 +91,7 @@ export default function TestExpressCoreUsersEmailVerification(server, models) {
             res.body.should.have.property('message');
             res.body.should.have.property('success').eq(false);
             res.body.should.have.property('type').eq('object');
-            res.body.should.have.property('object_type').eq('verification_token');
+            res.body.should.have.property('objectType').eq('verification_token');
             done();
           });
       });

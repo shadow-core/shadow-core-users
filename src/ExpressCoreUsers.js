@@ -32,7 +32,7 @@ export default class ExpressCoreUsers extends ExpressCoreBasic {
    * @returns {Promise.<void>}
    */
   async getUserByEmail(email) {
-    const user = await this.models.User.findByEmail(email).exec();
+    const user = await this.models.User.findByEmail(email);
     return user;
   }
 
