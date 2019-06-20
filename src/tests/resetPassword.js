@@ -59,7 +59,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
       });
 
       it('user data must be correct', (done) => {
-        models.User.findOne({ email: 'test@sensorlab.io' }).exec().then((user) => {
+        models.User.findOne({ email: 'test@test.com' }).exec().then((user) => {
           user._id.should.exist();
           user.resetPasswordIsRequested.should.equal(false);
           user.resetPasswordRequestsAmount.should.equal(0);
@@ -69,7 +69,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
 
 
       it('must return success', (done) => {
-        const data = { email: 'test@sensorlab.io' };
+        const data = { email: 'test@test.com' };
         chai.request(server)
           .post('/api/basic/users/reset_password/request')
           .send(data)
@@ -83,7 +83,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
       });
 
       it('must return success', (done) => {
-        const data = { email: 'test@sensorlab.io' };
+        const data = { email: 'test@test.com' };
         chai.request(server)
           .post('/api/basic/users/reset_password/request')
           .send(data)
@@ -97,7 +97,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
       });
 
       it('must return success', (done) => {
-        const data = { email: 'test@sensorlab.io' };
+        const data = { email: 'test@test.com' };
         chai.request(server)
           .post('/api/basic/users/reset_password/request')
           .send(data)
@@ -111,7 +111,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
       });
 
       it('must return error because too much requests', (done) => {
-        const data = { email: 'test@sensorlab.io' };
+        const data = { email: 'test@test.com' };
         chai.request(server)
           .post('/api/basic/users/reset_password/request')
           .send(data)
@@ -125,7 +125,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
       });
 
       it('user data must be correct', (done) => {
-        models.User.findOne({ email: 'test@sensorlab.io' }).exec().then((user) => {
+        models.User.findOne({ email: 'test@test.com' }).exec().then((user) => {
           user._id.should.exist();
           user.resetPasswordIsRequested.should.equal(true);
           user.resetPasswordToken.should.exist();
@@ -337,7 +337,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
       });
 
       it('user data must be correct', (done) => {
-        models.User.findOne({ email: 'test@sensorlab.io' }).exec().then((user) => {
+        models.User.findOne({ email: 'test@test.com' }).exec().then((user) => {
           user._id.should.exist();
           user.resetPasswordIsRequested.should.equal(false);
           done();
@@ -346,7 +346,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
 
       it('should NOT authorize with old password', (done) => {
         const data = {
-          email: 'test@sensorlab.io',
+          email: 'test@test.com',
           password: 'test',
         };
         chai.request(server)
@@ -360,7 +360,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
 
       it('should authorize with new password', (done) => {
         const data = {
-          email: 'test@sensorlab.io',
+          email: 'test@test.com',
           password: 'password',
         };
         chai.request(server)

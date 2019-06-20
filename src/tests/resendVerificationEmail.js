@@ -59,7 +59,7 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server) {
       });
 
       it('should return error if there is not such user in the database', (done) => {
-        const data = { email: 'admin+testtestestest@devilmaydie.name' };
+        const data = { email: 'admin+testtestestest@test.com' };
         chai.request(server)
           .post('/api/basic/users/verify_email/resend')
           .send(data)
@@ -75,7 +75,7 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server) {
       });
 
       it('should return error email is already verified', (done) => {
-        const data = { email: 'test@sensorlab.io' };
+        const data = { email: 'test@test.com' };
         chai.request(server)
           .post('/api/basic/users/verify_email/resend')
           .send(data)
@@ -91,7 +91,7 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server) {
       });
 
       it('should return success if everything is correct', (done) => {
-        const data = { email: 'admin+verify@devilmaydie.name', password: 'admin', password_check: 'admin' };
+        const data = { email: 'admin+verify@test.com', password: 'admin', password_check: 'admin' };
         chai.request(server)
           .post('/api/basic/users/signup')
           .send(data)
@@ -105,7 +105,7 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server) {
       });
 
       it('should return success', (done) => {
-        const data = { email: 'admin+verify@devilmaydie.name' };
+        const data = { email: 'admin+verify@test.com' };
         chai.request(server)
           .post('/api/basic/users/verify_email/resend')
           .send(data)
@@ -119,7 +119,7 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server) {
       });
 
       it('should return success', (done) => {
-        const data = { email: 'admin+verify@devilmaydie.name' };
+        const data = { email: 'admin+verify@test.com' };
         chai.request(server)
           .post('/api/basic/users/verify_email/resend')
           .send(data)
@@ -133,7 +133,7 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server) {
       });
 
       it('should return success', (done) => {
-        const data = { email: 'admin+verify@devilmaydie.name' };
+        const data = { email: 'admin+verify@test.com' };
         chai.request(server)
           .post('/api/basic/users/verify_email/resend')
           .send(data)
@@ -147,7 +147,7 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server) {
       });
 
       it('should return error - too much requests', (done) => {
-        const data = { email: 'admin+verify@devilmaydie.name' };
+        const data = { email: 'admin+verify@test.com' };
         chai.request(server)
           .post('/api/basic/users/verify_email/resend')
           .send(data)

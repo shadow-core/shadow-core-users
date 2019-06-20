@@ -26,7 +26,7 @@ export default function TestExpressCoreUsersEmailVerification(server, models) {
       });
 
       it('user data must be correct', (done) => {
-        models.User.findOne({ email: 'test@sensorlab.io' }).exec().then((user) => {
+        models.User.findOne({ email: 'test@test.com' }).exec().then((user) => {
           user._id.should.exist;
           user.isEmailVerified.should.equal(false);
           user.verificationCode.should.exist;
@@ -97,7 +97,7 @@ export default function TestExpressCoreUsersEmailVerification(server, models) {
       });
 
       it('user data must be correct', (done) => {
-        models.User.findOne({ email: 'test@sensorlab.io' }).exec().then((user) => {
+        models.User.findOne({ email: 'test@test.com' }).exec().then((user) => {
           user._id.should.exist;
           user.isEmailVerified.should.equal(true);
           user.verificationCode.should.exist;

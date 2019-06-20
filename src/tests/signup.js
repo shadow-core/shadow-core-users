@@ -61,7 +61,7 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
       });
 
       it('should return error if none of passwords is provided', (done) => {
-        const data = { email: 'test@sensorlab.io' };
+        const data = { email: 'test@test.com' };
         chai.request(server)
           .post('/api/v1/users/signup')
           .send(data)
@@ -78,7 +78,7 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
       });
 
       it('should return error if is password only provided', (done) => {
-        const data = { email: 'test@sensorlab.io', password: 'test' };
+        const data = { email: 'test@test.com', password: 'test' };
         chai.request(server)
           .post('/api/v1/users/signup')
           .send(data)
@@ -95,7 +95,7 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
       });
 
       it('should return error if only password check provided', (done) => {
-        const data = { email: 'test@sensorlab.io', password_check: 'test' };
+        const data = { email: 'test@test.com', password_check: 'test' };
         chai.request(server)
           .post('/api/v1/users/signup')
           .send(data)
@@ -112,7 +112,7 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
       });
 
       it('should return error passwords differ', (done) => {
-        const data = { email: 'test@sensorlab.io', password: 'test', password_check: 'password' };
+        const data = { email: 'test@test.com', password: 'test', password_check: 'password' };
         chai.request(server)
           .post('/api/v1/users/signup')
           .send(data)
@@ -128,7 +128,7 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
       });
 
       it('should return error passwords differ only by uppercase', (done) => {
-        const data = { email: 'test@sensorlab.io', password: 'test', password_check: 'Test' };
+        const data = { email: 'test@test.com', password: 'test', password_check: 'Test' };
         chai.request(server)
           .post('/api/v1/users/signup')
           .send(data)
@@ -144,7 +144,7 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
       });
 
       it('should return success if everything is correct', (done) => {
-        const data = { email: 'test@sensorlab.io', password: 'test', password_check: 'test' };
+        const data = { email: 'test@test.com', password: 'test', password_check: 'test' };
         chai.request(server)
           .post('/api/v1/users/signup')
           .send(data)
@@ -159,9 +159,9 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
       });
 
       it('user data must be correct', (done) => {
-        models.User.findOne({ email: 'test@sensorlab.io' }).exec().then((user) => {
+        models.User.findOne({ email: 'test@test.com' }).exec().then((user) => {
           user._id.should.exist;
-          user.email.should.exist.eq('test@sensorlab.io');
+          user.email.should.exist.eq('test@test.com');
           user.isEmailVerified.should.exist.eq(false);
           user.resetPasswordIsRequested.should.exist.eq(false);
           user.resetPasswordRequestsAmount.should.exist.eq(0);
@@ -171,7 +171,7 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
       });
 
       it('should return error because user with this email already exists', (done) => {
-        const data = { email: 'test@sensorlab.io', password: 'test', password_check: 'test' };
+        const data = { email: 'test@test.com', password: 'test', password_check: 'test' };
         chai.request(server)
           .post('/api/v1/users/signup')
           .send(data)
