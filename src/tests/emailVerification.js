@@ -15,7 +15,7 @@ export default function TestExpressCoreUsersEmailVerification(server, models) {
     describe('POST /users/verify_email', () => {
       it('must return 404 on get request', (done) => {
         chai.request(server)
-          .get('/api/basic/users/verify_email')
+          .get('/api/v1/users/verify_email')
           .send()
           .end((err, res) => {
             res.should.have.status(404);
@@ -37,7 +37,7 @@ export default function TestExpressCoreUsersEmailVerification(server, models) {
 
       it('must return error if no token is provided', (done) => {
         chai.request(server)
-          .post('/api/basic/users/verify_email')
+          .post('/api/v1/users/verify_email')
           .send()
           .end((err, res) => {
             res.should.have.status(422);
@@ -53,7 +53,7 @@ export default function TestExpressCoreUsersEmailVerification(server, models) {
       it('must return error if token is incorrect', (done) => {
         const data = { verification_token: 'testtoken' };
         chai.request(server)
-          .post('/api/basic/users/verify_email')
+          .post('/api/v1/users/verify_email')
           .send(data)
           .end((err, res) => {
             res.should.have.status(404);
@@ -69,7 +69,7 @@ export default function TestExpressCoreUsersEmailVerification(server, models) {
       it('must return success for correct token', (done) => {
         const data = { verification_token: verificationToken };
         chai.request(server)
-          .post('/api/basic/users/verify_email')
+          .post('/api/v1/users/verify_email')
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -83,7 +83,7 @@ export default function TestExpressCoreUsersEmailVerification(server, models) {
       it('it must return an error now since token was used', (done) => {
         const data = { verification_token: verificationToken };
         chai.request(server)
-          .post('/api/basic/users/verify_email')
+          .post('/api/v1/users/verify_email')
           .send(data)
           .end((err, res) => {
             res.should.have.status(404);

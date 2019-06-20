@@ -149,7 +149,6 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
           .post('/api/v1/users/signup')
           .send(data)
           .end((err, res) => {
-            console.log(res.body);
             res.should.have.status(200);
             res.body.should.have.property('success').eq(true);
             res.body.should.have.property('code').eq(100);

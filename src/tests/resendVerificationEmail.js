@@ -13,7 +13,7 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server) {
     describe('GET /users/verify_email/resend', () => {
       it('must return 404 on get request', (done) => {
         chai.request(server)
-          .get('/api/basic/users/verify_email/resend')
+          .get('/api/v1/users/verify_email/resend')
           .send()
           .end((err, res) => {
             res.should.have.status(404);
@@ -26,7 +26,7 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server) {
       it('should return error if there is no email', (done) => {
         const data = {};
         chai.request(server)
-          .post('/api/basic/users/verify_email/resend')
+          .post('/api/v1/users/verify_email/resend')
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -44,7 +44,7 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server) {
       it('should return error if email in wrong format', (done) => {
         const data = { email: 'admin' };
         chai.request(server)
-          .post('/api/basic/users/verify_email/resend')
+          .post('/api/v1/users/verify_email/resend')
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -61,7 +61,7 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server) {
       it('should return error if there is not such user in the database', (done) => {
         const data = { email: 'admin+testtestestest@test.com' };
         chai.request(server)
-          .post('/api/basic/users/verify_email/resend')
+          .post('/api/v1/users/verify_email/resend')
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -77,7 +77,7 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server) {
       it('should return error email is already verified', (done) => {
         const data = { email: 'test@test.com' };
         chai.request(server)
-          .post('/api/basic/users/verify_email/resend')
+          .post('/api/v1/users/verify_email/resend')
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -93,7 +93,7 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server) {
       it('should return success if everything is correct', (done) => {
         const data = { email: 'admin+verify@test.com', password: 'admin', password_check: 'admin' };
         chai.request(server)
-          .post('/api/basic/users/signup')
+          .post('/api/v1/users/signup')
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -107,7 +107,7 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server) {
       it('should return success', (done) => {
         const data = { email: 'admin+verify@test.com' };
         chai.request(server)
-          .post('/api/basic/users/verify_email/resend')
+          .post('/api/v1/users/verify_email/resend')
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -121,7 +121,7 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server) {
       it('should return success', (done) => {
         const data = { email: 'admin+verify@test.com' };
         chai.request(server)
-          .post('/api/basic/users/verify_email/resend')
+          .post('/api/v1/users/verify_email/resend')
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -135,7 +135,7 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server) {
       it('should return success', (done) => {
         const data = { email: 'admin+verify@test.com' };
         chai.request(server)
-          .post('/api/basic/users/verify_email/resend')
+          .post('/api/v1/users/verify_email/resend')
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -149,7 +149,7 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server) {
       it('should return error - too much requests', (done) => {
         const data = { email: 'admin+verify@test.com' };
         chai.request(server)
-          .post('/api/basic/users/verify_email/resend')
+          .post('/api/v1/users/verify_email/resend')
           .send(data)
           .end((err, res) => {
             res.should.have.status(429);
