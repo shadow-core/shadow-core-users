@@ -4,7 +4,8 @@ const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 
 /**
- * This is main class with all required methods for user actions.
+ * @class ExpressCoreUsers
+ * @classdesc This is main class with all required methods for user actions.
  */
 export default class ExpressCoreUsers extends ExpressCoreBasic {
   /**
@@ -24,29 +25,15 @@ export default class ExpressCoreUsers extends ExpressCoreBasic {
   }
 
   /**
-   * Find user by email.
-   *
-   * @TODO this is got it be moved/removed to schema
-   *
-   * @param email
-   * @returns {Promise.<void>}
-   */
-  async getUserByEmail(email) {
-    const user = await this.models.User.findByEmail(email);
-    return user;
-  }
-
-  /**
    * Save new user/account
    *
-   * @param email
-   * @param password
-   * @constructor
+   * @param {string} email new user email
+   * @param {string} password new user password
+   * @return {Object} newly created user
    */
   async ProcessSignUpUser(email, password) {
     const verificationCode = crypto.randomBytes(64).toString('hex');
 
-    /* @TODO Make this method as model method */
     const newUser = new this.models.User({
       email,
       password_hash: bcrypt.hashSync(password, 10),
@@ -58,9 +45,9 @@ export default class ExpressCoreUsers extends ExpressCoreBasic {
   }
 
   /**
-   * Check if there was more than 3 resend verification requests for last hour.
+   * Check if user went over the number of requests for specified period
    *
-   * @param user
+   * @param {Object} user
    * @returns {boolean}
    */
   checkTooMuchRequests(user) {
@@ -76,9 +63,9 @@ export default class ExpressCoreUsers extends ExpressCoreBasic {
   }
 
   /**
-   * Update some data for user for resend verification
+   * Update amount of resend verification requests and last request date.
    *
-   * @param user
+   * @param {Object} user
    * @returns {Object}
    */
   async updateResendVerification(user) {
@@ -95,28 +82,11 @@ export default class ExpressCoreUsers extends ExpressCoreBasic {
   }
 
   /**
-     * Find user by verification token.
-     *
-     * @param {string} verificationToken
-     * @returns {Object}
-     */
-  async getUserByVerificationToken(verificationToken) {
-    /* @TODO make this a model method */
-    const user = await this.models.User.findOne(
-      {
-        verificationCode: verificationToken,
-        isEmailVerified: false,
-      },
-    ).exec();
-    return user;
-  }
-
-  /**
-     * Save required data for password reset
-     *
-     * @param user
-     * @returns {Promise}
-     */
+   * Save required data for password reset
+   *
+   * @param {Object} user User object
+   * @returns {Promise}
+   */
   async prepareResetPassword(user) {
     const result = user;
     const lastRequestDate = user.resetPasswordRequestDate;
@@ -133,11 +103,11 @@ export default class ExpressCoreUsers extends ExpressCoreBasic {
   }
 
   /**
-     * Check if there was more than 3 request for last hour.
-     *
-     * @param user
-     * @returns {boolean}
-     */
+   * Check reset password requests limit
+   *
+   * @param {Object} user
+   * @returns {boolean}
+   */
   checkTooMuchResetPasswordRequests(user) {
     if (!user.resetPasswordRequestsAmount) {
       return false;
@@ -151,27 +121,12 @@ export default class ExpressCoreUsers extends ExpressCoreBasic {
   }
 
   /**
-     * Find user with password reset token.
-     * @TODO make this a model method.
-     *
-     * @param token
-     * @return {Object}
-     */
-  async getUserByPasswordResetToken(token) {
-    const user = this.models.User.findOne({
-      resetPasswordToken: token,
-      resetPasswordIsRequested: true,
-    }).exec();
-    return user;
-  }
-
-  /**
-     * Update user password
-     *
-     * @param user
-     * @param password
-     * @return {Promise}
-     */
+   * Update user password
+   *
+   * @param {string} user - User object
+   * @param {string} password - new password
+   * @return {Promise}
+   */
   async updateUserPassword(user, password) {
     const result = user;
     result.password_hash = bcrypt.hashSync(password, 10);

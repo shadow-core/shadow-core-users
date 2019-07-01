@@ -57,6 +57,11 @@ const UserSchema = new Schema({
 });
 
 UserSchema.methods = {
+  /**
+   * Check if email if verified.
+   *
+   * @return {boolean}
+   */
   checkEmailVerified() {
     const diffTime = Date.now() - this.registrationDate.getTime();
     const maxDiffTime = 7 * 24 * 3600 * 1000;
@@ -69,11 +74,57 @@ UserSchema.methods = {
 };
 
 UserSchema.statics = {
+  /**
+   * Find user by email
+   *
+   * @param {string} email - User's email
+   * @param {function} cb - Callback
+   * @return {Query|void}
+   */
   findByEmail(email, cb) {
-    return this.findOne({ email, isDeleted: { $ne: true } }, cb).exec();
+    return this.findOne({ email, isDeleted: { $ne: true } }, cb);
   },
+
+  /**
+   * Find user by ID
+   * @param {string} id - User's id
+   * @param {function} cb - Callback
+   * @return {Query|void}
+   */
   findById(id, cb) {
     return this.findOne({ _id: id }, cb);
+  },
+
+  /**
+   * Find user by verification token.
+   *
+   * @param {string} verificationToken - Verification Token
+   * @param {function} cb - Callback
+   * @return {Query|void}
+   */
+  getUserByVerificationToken(verificationToken, cb) {
+    return this.findOne(
+      {
+        verificationCode: verificationToken,
+        isEmailVerified: false,
+      }, cb,
+    );
+  },
+
+  /**
+   * Find user by password reset token
+   *
+   * @param {string} token - Password reset token
+   * @param {function} cb - Callback
+   * @return {Query|void}
+   */
+  getUserByPasswordResetToken(token, cb) {
+    return this.findOne(
+      {
+        resetPasswordToken: token,
+        resetPasswordIsRequested: true,
+      }, cb,
+    );
   },
 };
 
