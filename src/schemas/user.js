@@ -60,6 +60,7 @@ UserSchema.methods = {
   /**
    * Check if email if verified.
    *
+   * @todo should check this one too along with disabling verification.
    * @return {boolean}
    */
   checkEmailVerified() {
@@ -70,6 +71,53 @@ UserSchema.methods = {
       return false;
     }
     return true;
+  },
+
+  /**
+   * Check that user can request verification resend again
+   *
+   * @param {Object} config
+   * @return {boolean}
+   */
+  checkVerificationRequestRule(config) {
+    const checkTime = this.verificationResendRequestDate.getTime() + config.verification_timeout;
+    return ((checkTime > Date.now())
+      && (this.verificationResendAmount >= config.verification_amount));
+  },
+
+  /**
+   * Check that last request timeout expired.
+   *
+   * @param config
+   * @return {boolean}
+   */
+  checkLastResendVerificationRequest(config) {
+    const lastRequestDate = this.verificationResendRequestDate;
+    return (lastRequestDate
+           && (lastRequestDate.getTime() + config.verification_timeout < Date.now()));
+  },
+
+  /**
+   * Check that user cna request password reset again.
+   *
+   * @param config
+   * @return {boolean}
+   */
+  checkResetPasswordRequestRule(config) {
+    const checkTime = this.resetPasswordRequestDate.getTime() + config.password_reset_timeout;
+    return ((checkTime > Date.now())
+      && (this.resetPasswordRequestsAmount >= config.password_reset_amount))
+  },
+
+  /**
+   * Check that last request timeout for password reset expired.
+   *
+   * @param config
+   */
+  checkLastResetPasswordRequest(config) {
+    const lastRequestDate = this.resetPasswordRequestDate;
+    return (lastRequestDate
+           && (lastRequestDate.getTime() + config.password_reset_timeout < Date.now()));
   },
 };
 

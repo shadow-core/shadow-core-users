@@ -13,11 +13,13 @@ export default class UsersController extends BasicController {
    * Constructor. Pass models to it.
    *
    * @param {Object} models Object with applications models.
+   * @param {Object} config Additional configuration things.
    */
-  constructor(models) {
+  constructor(models, config = {}) {
     super();
     this.models = models;
-    this.core = new ExpressCoreUsers(this.models);
+    this.config = config;
+    this.core = new ExpressCoreUsers(this.models, this.config);
   }
 
   /**

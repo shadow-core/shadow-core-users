@@ -13,9 +13,19 @@ export default class ExpressCoreUsers extends ExpressCoreBasic {
    *
    * @param {Object} models
    */
-  constructor(models) {
+  constructor(models, config) {
     super();
     this.models = models;
+
+    const chkConfig = config;
+    // by default only three requests are allowed in one hour
+    if (chkConfig.verification_timeout === undefined) chkConfig.verification_timeout = 3600 * 1000;
+    if (chkConfig.verification_amount === undefined) chkConfig.verification_amount = 3;
+    if (chkConfig.password_reset_timeout === undefined) chkConfig.password_reset_timeout = 3600 * 1000;
+    if (chkConfig.password_reset_amount === undefined) chkConfig.password_reset_amount = 3;
+
+    this.config = chkConfig;
+
     this.addJsonResponses('signup_user', require('./json_responses/signup_user'));
     this.addJsonResponses('verify_email_resend', require('./json_responses/verify_email_resend'));
     this.addJsonResponses('verify_email', require('./json_responses/verify_email'));
@@ -54,12 +64,7 @@ export default class ExpressCoreUsers extends ExpressCoreBasic {
     if (!user.verificationResendAmount) {
       return false;
     }
-    /* @TODO make timeout configurable */
-    if ((user.verificationResendRequestDate.getTime() + 3600 * 1000) > Date.now()
-      && user.verificationResendAmount >= 3) {
-      return true;
-    }
-    return false;
+    return user.checkVerificationRequestRule(this.config);
   }
 
   /**
@@ -70,33 +75,10 @@ export default class ExpressCoreUsers extends ExpressCoreBasic {
    */
   async updateResendVerification(user) {
     const result = user;
-    const lastRequestDate = user.verificationResendRequestDate;
     result.verificationResendRequestDate = Date.now();
     result.verificationResendAmount += 1;
-    /* @TODO make timeout configurable and move it at some method */
-    if (lastRequestDate && (lastRequestDate.getTime() + 3600 * 1000 < Date.now())) {
+    if (user.checkLastResendVerificationRequest(this.config)) {
       result.verificationResendAmount = 1;
-    }
-
-    await result.save();
-  }
-
-  /**
-   * Save required data for password reset
-   *
-   * @param {Object} user User object
-   * @returns {Promise}
-   */
-  async prepareResetPassword(user) {
-    const result = user;
-    const lastRequestDate = user.resetPasswordRequestDate;
-    result.resetPasswordIsRequested = true;
-    result.resetPasswordRequestDate = Date.now();
-    result.resetPasswordToken = crypto.randomBytes(64).toString('hex');
-    result.resetPasswordRequestsAmount += 1;
-    /* @TODO make timeout configurable */
-    if (lastRequestDate && (lastRequestDate.getTime() + 3600 * 1000 < Date.now())) {
-      result.resetPasswordRequestsAmount = 1;
     }
 
     await result.save();
@@ -112,12 +94,28 @@ export default class ExpressCoreUsers extends ExpressCoreBasic {
     if (!user.resetPasswordRequestsAmount) {
       return false;
     }
+    return user.checkResetPasswordRequestRule(this.config);
+  }
+
+  /**
+   * Save required data for password reset
+   *
+   * @param {Object} user User object
+   * @returns {Promise}
+   */
+  async prepareResetPassword(user) {
+    const result = user;
+    result.resetPasswordIsRequested = true;
+    result.resetPasswordRequestDate = Date.now();
+    result.resetPasswordToken = crypto.randomBytes(64).toString('hex');
+    result.resetPasswordRequestsAmount += 1;
     /* @TODO make timeout configurable */
-    if ((user.resetPasswordRequestDate.getTime() + 3600 * 1000) > Date.now()
-      && user.resetPasswordRequestsAmount >= 3) {
-      return true;
+
+    if (user.checkLastResetPasswordRequest(this.config)) {
+      result.resetPasswordRequestsAmount = 1;
     }
-    return false;
+
+    await result.save();
   }
 
   /**
