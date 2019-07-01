@@ -1,18 +1,18 @@
 import validator from 'validator';
 
 const { checkSchema } = require('express-validator/check');
-const jsonAnswers = require('../json_answers/reset_password_request');
+const jsonResponses = require('../json_responses/reset_password_request');
 
 export default function (models) {
   return checkSchema({
     email: {
       in: ['body'],
       isLength: {
-        errorMessage: jsonAnswers.error_email_is_length,
+        errorMessage: jsonResponses.error_email_is_length,
         options: { min: 1 },
       },
       isEmail: {
-        errorMessage: jsonAnswers.error_email_format,
+        errorMessage: jsonResponses.error_email_format,
       },
       custom: {
         options: (value) => {
@@ -35,7 +35,7 @@ export default function (models) {
             if (user) {
               return true;
             }
-            throw new Error(JSON.stringify(jsonAnswers.error_no_user));
+            throw new Error(JSON.stringify(jsonResponses.error_no_user));
           });
         },
       },
