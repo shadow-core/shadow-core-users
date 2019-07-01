@@ -88,7 +88,8 @@ export default class UsersController extends BasicController {
     const actionParams = this.core.getMatchedData(req);
 
     // find user by token
-    const user = await this.core.models.User.getUserByVerificationToken(actionParams.verification_token);
+    const user = await this.core.models.User
+      .getUserByVerificationToken(actionParams.verification_token);
     if (!user) {
       return this.returnNotFoundError(res, 'verification_token', 'Email verification token is incorrect or outdated');
     }
