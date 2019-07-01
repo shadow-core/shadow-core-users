@@ -45,13 +45,13 @@ export default function TestExpressCoreUsersEmailVerification(server, models) {
             res.body.should.have.property('code').eq(422);
             res.body.should.have.property('errors');
             res.body.errors.should.be.a('array');
-            res.body.errors.should.containSubset([{ code: 1, param: 'verification_token' }]);
+            res.body.errors.should.containSubset([{ code: 1, param: 'verificationToken' }]);
             done();
           });
       });
 
       it('must return error if token is incorrect', (done) => {
-        const data = { verification_token: 'testtoken' };
+        const data = { verificationToken: 'testtoken' };
         chai.request(server)
           .post('/api/v1/users/verify_email')
           .send(data)
@@ -61,13 +61,13 @@ export default function TestExpressCoreUsersEmailVerification(server, models) {
             res.body.should.have.property('message');
             res.body.should.have.property('success').eq(false);
             res.body.should.have.property('type').eq('object');
-            res.body.should.have.property('objectType').eq('verification_token');
+            res.body.should.have.property('objectType').eq('verificationToken');
             done();
           });
       });
 
       it('must return success for correct token', (done) => {
-        const data = { verification_token: verificationToken };
+        const data = { verificationToken };
         chai.request(server)
           .post('/api/v1/users/verify_email')
           .send(data)
@@ -81,7 +81,7 @@ export default function TestExpressCoreUsersEmailVerification(server, models) {
       });
 
       it('it must return an error now since token was used', (done) => {
-        const data = { verification_token: verificationToken };
+        const data = { verificationToken };
         chai.request(server)
           .post('/api/v1/users/verify_email')
           .send(data)
@@ -91,7 +91,7 @@ export default function TestExpressCoreUsersEmailVerification(server, models) {
             res.body.should.have.property('message');
             res.body.should.have.property('success').eq(false);
             res.body.should.have.property('type').eq('object');
-            res.body.should.have.property('objectType').eq('verification_token');
+            res.body.should.have.property('objectType').eq('verificationToken');
             done();
           });
       });

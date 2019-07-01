@@ -37,7 +37,7 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
             res.body.errors.should.containSubset([{ code: 1, param: 'email' }]);
             res.body.errors.should.containSubset([{ code: 2, param: 'email' }]);
             res.body.errors.should.containSubset([{ code: 4, param: 'password' }]);
-            res.body.errors.should.containSubset([{ code: 5, param: 'password_check' }]);
+            res.body.errors.should.containSubset([{ code: 5, param: 'passwordCheck' }]);
             done();
           });
       });
@@ -55,7 +55,7 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
             res.body.errors.should.be.a('array');
             res.body.errors.should.containSubset([{ code: 2, param: 'email' }]);
             res.body.errors.should.containSubset([{ code: 4, param: 'password' }]);
-            res.body.errors.should.containSubset([{ code: 5, param: 'password_check' }]);
+            res.body.errors.should.containSubset([{ code: 5, param: 'passwordCheck' }]);
             done();
           });
       });
@@ -72,7 +72,7 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
             res.body.should.have.property('errors');
             res.body.errors.should.be.a('array');
             res.body.errors.should.containSubset([{ code: 4, param: 'password' }]);
-            res.body.errors.should.containSubset([{ code: 5, param: 'password_check' }]);
+            res.body.errors.should.containSubset([{ code: 5, param: 'passwordCheck' }]);
             done();
           });
       });
@@ -88,14 +88,14 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
             res.body.should.have.property('code').eq(422);
             res.body.should.have.property('errors');
             res.body.errors.should.be.a('array');
-            res.body.errors.should.containSubset([{ code: 5, param: 'password_check' }]);
-            res.body.errors.should.containSubset([{ code: 6, param: 'password_check' }]);
+            res.body.errors.should.containSubset([{ code: 5, param: 'passwordCheck' }]);
+            res.body.errors.should.containSubset([{ code: 6, param: 'passwordCheck' }]);
             done();
           });
       });
 
       it('should return error if only password check provided', (done) => {
-        const data = { email: 'test@test.com', password_check: 'test' };
+        const data = { email: 'test@test.com', passwordCheck: 'test' };
         chai.request(server)
           .post('/api/v1/users/signup')
           .send(data)
@@ -106,13 +106,13 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
             res.body.should.have.property('errors');
             res.body.errors.should.be.a('array');
             res.body.errors.should.containSubset([{ code: 4, param: 'password' }]);
-            res.body.errors.should.containSubset([{ code: 6, param: 'password_check' }]);
+            res.body.errors.should.containSubset([{ code: 6, param: 'passwordCheck' }]);
             done();
           });
       });
 
       it('should return error passwords differ', (done) => {
-        const data = { email: 'test@test.com', password: 'test', password_check: 'password' };
+        const data = { email: 'test@test.com', password: 'test', passwordCheck: 'password' };
         chai.request(server)
           .post('/api/v1/users/signup')
           .send(data)
@@ -122,13 +122,13 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
             res.body.should.have.property('code').eq(422);
             res.body.should.have.property('errors');
             res.body.errors.should.be.a('array');
-            res.body.errors.should.containSubset([{ code: 6, param: 'password_check' }]);
+            res.body.errors.should.containSubset([{ code: 6, param: 'passwordCheck' }]);
             done();
           });
       });
 
       it('should return error passwords differ only by uppercase', (done) => {
-        const data = { email: 'test@test.com', password: 'test', password_check: 'Test' };
+        const data = { email: 'test@test.com', password: 'test', passwordCheck: 'Test' };
         chai.request(server)
           .post('/api/v1/users/signup')
           .send(data)
@@ -138,13 +138,13 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
             res.body.should.have.property('code').eq(422);
             res.body.should.have.property('errors');
             res.body.errors.should.be.a('array');
-            res.body.errors.should.containSubset([{ code: 6, param: 'password_check' }]);
+            res.body.errors.should.containSubset([{ code: 6, param: 'passwordCheck' }]);
             done();
           });
       });
 
       it('should return success if everything is correct', (done) => {
-        const data = { email: 'test@test.com', password: 'test', password_check: 'test' };
+        const data = { email: 'test@test.com', password: 'test', passwordCheck: 'test' };
         chai.request(server)
           .post('/api/v1/users/signup')
           .send(data)
@@ -170,7 +170,7 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
       });
 
       it('should return error because user with this email already exists', (done) => {
-        const data = { email: 'test@test.com', password: 'test', password_check: 'test' };
+        const data = { email: 'test@test.com', password: 'test', passwordCheck: 'test' };
         chai.request(server)
           .post('/api/v1/users/signup')
           .send(data)

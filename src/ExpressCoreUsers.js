@@ -26,12 +26,12 @@ export default class ExpressCoreUsers extends ExpressCoreBasic {
 
     this.config = chkConfig;
 
-    this.addJsonResponses('signup_user', require('./json_responses/signup_user'));
-    this.addJsonResponses('verify_email_resend', require('./json_responses/verify_email_resend'));
-    this.addJsonResponses('verify_email', require('./json_responses/verify_email'));
-    this.addJsonResponses('reset_password_request', require('./json_responses/reset_password_request'));
-    this.addJsonResponses('reset_password', require('./json_responses/reset_password'));
-    this.addJsonResponses('reset_password_check', require('./json_responses/reset_password_check'));
+    this.addJsonResponses('signupUser', require('./json_responses/signupUser'));
+    this.addJsonResponses('verifyEmailResend', require('./json_responses/verifyEmailResend'));
+    this.addJsonResponses('verifyEmail', require('./json_responses/verifyEmail'));
+    this.addJsonResponses('resetPasswordRequest', require('./json_responses/resetPasswordRequest'));
+    this.addJsonResponses('resetPassword', require('./json_responses/resetPassword'));
+    this.addJsonResponses('resetPasswordCheck', require('./json_responses/resetPasswordCheck'));
   }
 
   /**

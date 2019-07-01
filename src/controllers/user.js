@@ -43,7 +43,7 @@ export default class UsersController extends BasicController {
 
     await this.core.ProcessSignUpUser(actionParams.email, actionParams.password);
     // sendVerificationEmail(newUser);
-    return this.returnSuccess(this.core.getJsonResponse('signup_user', 'success'), res);
+    return this.returnSuccess(this.core.getJsonResponse('signupUser', 'success'), res);
   }
 
   /**
@@ -65,13 +65,13 @@ export default class UsersController extends BasicController {
 
     // return error if too much requests
     if (this.core.checkTooMuchRequests(user)) {
-      return this.returnError(this.core.getJsonResponse('verify_email_resend', 'error_too_much_requests'), res, 429);
+      return this.returnError(this.core.getJsonResponse('verifyEmailResend', 'errorTooMuchRequests'), res, 429);
     }
 
     // send email, add counter and return success
     await this.core.updateResendVerification(user);
     // sendVerificationEmail(user);
-    return this.returnSuccess(this.core.getJsonResponse('verify_email_resend', 'success'), res);
+    return this.returnSuccess(this.core.getJsonResponse('verifyEmailResend', 'success'), res);
   }
 
   /**
@@ -91,13 +91,13 @@ export default class UsersController extends BasicController {
 
     // find user by token
     const user = await this.core.models.User
-      .getUserByVerificationToken(actionParams.verification_token);
+      .getUserByVerificationToken(actionParams.verificationToken);
     if (!user) {
-      return this.returnNotFoundError(res, 'verification_token', 'Email verification token is incorrect or outdated');
+      return this.returnNotFoundError(res, 'verificationToken', 'Email verification token is incorrect or outdated');
     }
     user.isEmailVerified = true;
     await user.save();
-    return this.returnSuccess(this.core.getJsonResponse('verify_email', 'success'), res);
+    return this.returnSuccess(this.core.getJsonResponse('verifyEmail', 'success'), res);
   }
 
   /**
@@ -118,13 +118,13 @@ export default class UsersController extends BasicController {
     const user = await this.core.models.User.findByEmail(actionParams.email);
 
     if (this.core.checkTooMuchResetPasswordRequests(user)) {
-      return this.returnError(this.core.getJsonResponse('reset_password_request', 'error_reset_password_too_much_requests'), res, 429);
+      return this.returnError(this.core.getJsonResponse('resetPasswordRequest', 'errorResetPasswordTooMuchRequests'), res, 429);
     }
 
     // seems like we can send reset password
     await this.core.prepareResetPassword(user);
     // sendResetPasswordRequestEmail(user);
-    return this.returnSuccess(this.core.getJsonResponse('reset_password_request', 'success'), res);
+    return this.returnSuccess(this.core.getJsonResponse('resetPasswordRequest', 'success'), res);
   }
 
   /**
@@ -144,12 +144,12 @@ export default class UsersController extends BasicController {
 
     const user = await this.core.models.User.getUserByPasswordResetToken(actionParams.token);
     if (!user) {
-      return this.returnNotFoundError(res, 'reset_password_token', 'Token is incorrect or already has been used');
+      return this.returnNotFoundError(res, 'resetPasswordToken', 'Token is incorrect or already has been used');
     }
 
     await this.core.updateUserPassword(user, actionParams.password);
 
-    return this.returnSuccess(this.core.getJsonResponse('reset_password', 'success'), res);
+    return this.returnSuccess(this.core.getJsonResponse('resetPassword', 'success'), res);
   }
 
   /**
@@ -169,9 +169,9 @@ export default class UsersController extends BasicController {
 
     const user = await this.core.models.User.getUserByPasswordResetToken(actionParams.token);
     if (!user) {
-      return this.returnNotFoundError(res, 'reset_password_token', 'Token is incorrect or already has been used');
+      return this.returnNotFoundError(res, 'resetPasswordToken', 'Token is incorrect or already has been used');
     }
 
-    return this.returnSuccess(this.core.getJsonResponse('reset_password_check', 'success'), res);
+    return this.returnSuccess(this.core.getJsonResponse('resetPasswordCheck', 'success'), res);
   }
 }

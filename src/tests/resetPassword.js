@@ -174,7 +174,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
             res.body.should.have.property('message');
             res.body.should.have.property('success').eq(false);
             res.body.should.have.property('type').eq('object');
-            res.body.should.have.property('objectType').eq('reset_password_token');
+            res.body.should.have.property('objectType').eq('resetPasswordToken');
             done();
           });
       });
@@ -219,7 +219,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
             res.body.errors.should.be.a('array');
             res.body.errors.should.containSubset([{ code: 1, param: 'token' }]);
             res.body.errors.should.containSubset([{ code: 2, param: 'password' }]);
-            res.body.errors.should.containSubset([{ code: 3, param: 'password_check' }]);
+            res.body.errors.should.containSubset([{ code: 3, param: 'passwordCheck' }]);
             done();
           });
       });
@@ -236,7 +236,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
             res.body.should.have.property('errors');
             res.body.errors.should.be.a('array');
             res.body.errors.should.containSubset([{ code: 2, param: 'password' }]);
-            res.body.errors.should.containSubset([{ code: 3, param: 'password_check' }]);
+            res.body.errors.should.containSubset([{ code: 3, param: 'passwordCheck' }]);
             done();
           });
       });
@@ -253,7 +253,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
             res.body.should.have.property('errors');
             res.body.errors.should.be.a('array');
             res.body.errors.should.containSubset([{ code: 2, param: 'password' }]);
-            res.body.errors.should.containSubset([{ code: 3, param: 'password_check' }]);
+            res.body.errors.should.containSubset([{ code: 3, param: 'passwordCheck' }]);
             done();
           });
       });
@@ -269,13 +269,13 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
             res.body.should.have.property('code').eq(422);
             res.body.should.have.property('errors');
             res.body.errors.should.be.a('array');
-            res.body.errors.should.containSubset([{ code: 3, param: 'password_check' }]);
+            res.body.errors.should.containSubset([{ code: 3, param: 'passwordCheck' }]);
             done();
           });
       });
 
       it('must return error if password is not provided', (done) => {
-        const data = { token, password_check: 'test' };
+        const data = { token, passwordCheck: 'test' };
         chai.request(server)
           .post('/api/v1/users/reset_password')
           .send(data)
@@ -291,7 +291,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
       });
 
       it('must return error if passwords are not equal', (done) => {
-        const data = { token, password: 'Test', password_check: 'test' };
+        const data = { token, password: 'Test', passwordCheck: 'test' };
         chai.request(server)
           .post('/api/v1/users/reset_password')
           .send(data)
@@ -301,13 +301,13 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
             res.body.should.have.property('code').eq(422);
             res.body.should.have.property('errors');
             res.body.errors.should.be.a('array');
-            res.body.errors.should.containSubset([{ code: 4, param: 'password_check' }]);
+            res.body.errors.should.containSubset([{ code: 4, param: 'passwordCheck' }]);
             done();
           });
       });
 
       it('must return success', (done) => {
-        const data = { token, password: 'password', password_check: 'password' };
+        const data = { token, password: 'password', passwordCheck: 'password' };
         chai.request(server)
           .post('/api/v1/users/reset_password')
           .send(data)
@@ -321,7 +321,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
       });
 
       it('must return error because we used token', (done) => {
-        const data = { token, password: 'password', password_check: 'password' };
+        const data = { token, password: 'password', passwordCheck: 'password' };
         chai.request(server)
           .post('/api/v1/users/reset_password')
           .send(data)
@@ -331,7 +331,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
             res.body.should.have.property('message');
             res.body.should.have.property('success').eq(false);
             res.body.should.have.property('type').eq('object');
-            res.body.should.have.property('objectType').eq('reset_password_token');
+            res.body.should.have.property('objectType').eq('resetPasswordToken');
             done();
           });
       });

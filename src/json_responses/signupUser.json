@@ -1,25 +1,25 @@
 {
-    "error_email_is_length": {
+    "errorEmailIsLength": {
         "code": 1,
         "message": "Please, provide email. This cannot be empty"
     },
-    "error_email_format": {
+    "errorEmailFormat": {
         "code": 2,
         "message": "Please, provide correct email"
     },
-    "error_email_is_not_unique": {
+    "errorEmailIsNotUnique": {
         "code": 3,
         "message": "Someone already registered this email"
     },
-    "error_password_is_length": {
+    "errorPasswordIsLength": {
         "code": 4,
         "message": "Please provide password field. This cannot be empty"
     },
-    "error_password_check_is_length": {
+    "errorPasswordCheckIsLength": {
         "code": 5,
         "message": "Please provide password confirmation field. This cannot be empty"
     },
-    "error_passwords_not_equal": {
+    "errorPasswordsNotEqual": {
         "code": 6,
         "message": "Both 'password' and 'password_check' fields must be equal"
     },

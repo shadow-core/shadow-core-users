@@ -90,7 +90,7 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server) {
       });
 
       it('should return success if everything is correct', (done) => {
-        const data = { email: 'admin+verify@test.com', password: 'admin', password_check: 'admin' };
+        const data = { email: 'admin+verify@test.com', password: 'admin', passwordCheck: 'admin' };
         chai.request(server)
           .post('/api/v1/users/signup')
           .send(data)

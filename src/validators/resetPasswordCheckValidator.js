@@ -1,12 +1,12 @@
 const { checkSchema } = require('express-validator/check');
-const jsonResponses = require('../json_responses/reset_password_check');
+const jsonResponses = require('../json_responses/resetPasswordCheck');
 
 export default function () {
   return checkSchema({
     token: {
       in: ['body'],
       isLength: {
-        errorMessage: jsonResponses.error_token_is_length,
+        errorMessage: jsonResponses.errorTokenIsLength,
         options: { min: 1 },
       },
       trim: true,

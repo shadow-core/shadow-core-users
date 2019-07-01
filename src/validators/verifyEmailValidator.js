@@ -1,12 +1,12 @@
 const { checkSchema } = require('express-validator/check');
-const jsonResponses = require('../json_responses/verify_email');
+const jsonResponses = require('../json_responses/verifyEmail');
 
 export default function () {
   return checkSchema({
-    verification_token: {
+    verificationToken: {
       in: ['body'],
       isLength: {
-        errorMessage: jsonResponses.error_no_verification_token,
+        errorMessage: jsonResponses.errorNoVerificationToken,
         options: { min: 1 },
       },
       trim: true,

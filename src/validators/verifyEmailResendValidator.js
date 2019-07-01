@@ -1,16 +1,16 @@
 const { checkSchema } = require('express-validator/check');
-const jsonResponses = require('../json_responses/verify_email_resend');
+const jsonResponses = require('../json_responses/verifyEmailResend');
 
 export default function (models) {
   return checkSchema({
     email: {
       in: ['body'],
       isLength: {
-        errorMessage: jsonResponses.error_email_is_length,
+        errorMessage: jsonResponses.errorEmailIsLength,
         options: { min: 1 },
       },
       isEmail: {
-        errorMessage: jsonResponses.error_email_format,
+        errorMessage: jsonResponses.errorEmailFormat,
       },
       custom: {
         options: (value) => new Promise(((resolve, reject) => {
@@ -27,14 +27,14 @@ export default function (models) {
         })).then((user) => {
           if (user) {
             if (user.isEmailVerified) {
-              throw new Error(JSON.stringify(jsonResponses.error_verified));
+              throw new Error(JSON.stringify(jsonResponses.errorVerified));
             }
             return true;
           } else {
             if (!value) {
               return true;
             }
-            throw new Error(JSON.stringify(jsonResponses.error_no_user));
+            throw new Error(JSON.stringify(jsonResponses.errorNoUser));
           }
         }),
       },

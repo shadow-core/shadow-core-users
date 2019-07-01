@@ -1,6 +1,6 @@
 {
   "name": "shadow-core-users",
-  "version": "0.0.3-b",
+  "version": "0.0.5",
   "description": "Users package for Shadow-core project.",
   "author": "Gray Hound",
   "license": "ISC",
@@ -13,11 +13,10 @@
   "main": "lib/index.js",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "crypto": "^1.0.1",
     "express-async-handler": "^1.1.4",
     "express-validator": "^5.3.1",
     "mongoose": "^5.5.4",
-    "shadow-core-basic": "^0.0.2-с",
+    "shadow-core-basic": "^0.0.3",
     "validator": "^10.11.0"
   },
   "devDependencies": {

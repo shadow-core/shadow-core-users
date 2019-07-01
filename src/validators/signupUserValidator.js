@@ -1,19 +1,19 @@
 const { checkSchema } = require('express-validator/check');
-const jsonResponses = require('../json_responses/signup_user');
+const jsonResponses = require('../json_responses/signupUser');
 
 export default function (models) {
   return checkSchema({
     email: {
       in: ['body'],
       isLength: {
-        errorMessage: jsonResponses.error_email_is_length,
+        errorMessage: jsonResponses.errorEmailIsLength,
         options: { min: 1 },
       },
       isEmail: {
-        errorMessage: jsonResponses.error_email_format,
+        errorMessage: jsonResponses.errorEmailFormat,
       },
       custom: {
-        errorMessage: jsonResponses.error_email_is_not_unique,
+        errorMessage: jsonResponses.errorEmailIsNotUnique,
         options: (value) => {
           return new Promise((resolve, reject) => {
             models.User.findByEmail(value, (err, user) => {
@@ -38,18 +38,18 @@ export default function (models) {
     password: {
       in: ['body'],
       isLength: {
-        errorMessage: jsonResponses.error_password_is_length,
+        errorMessage: jsonResponses.errorPasswordIsLength,
         options: { min: 1 },
       },
     },
-    password_check: {
+    passwordCheck: {
       in: ['body'],
       isLength: {
-        errorMessage: jsonResponses.error_password_check_is_length,
+        errorMessage: jsonResponses.errorPasswordCheckIsLength,
         options: { min: 1 },
       },
       custom: {
-        errorMessage: jsonResponses.error_passwords_not_equal,
+        errorMessage: jsonResponses.errorPasswordsNotEqual,
         options: (value, { req }) => value === req.body.password,
       },
     },
