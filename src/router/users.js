@@ -18,6 +18,7 @@ export default function (router, models, config) {
     .route('/users/signup')
     .post(
       ExpressCoreUsersValidators.signupUserValidator(models),
+      usersController.checkValidationErrors.bind(usersController),
       asyncHandler(usersController.signupUserAction.bind(usersController)),
     );
 
@@ -26,6 +27,7 @@ export default function (router, models, config) {
     .route('/users/verify_email/resend')
     .post(
       ExpressCoreUsersValidators.verifyEmailResendValidator(models),
+      usersController.checkValidationErrors.bind(usersController),
       asyncHandler(usersController.verifyEmailResendAction.bind(usersController)),
     );
 
@@ -34,6 +36,7 @@ export default function (router, models, config) {
     .route('/users/verify_email')
     .post(
       ExpressCoreUsersValidators.verifyEmailValidator(models),
+      usersController.checkValidationErrors.bind(usersController),
       asyncHandler(usersController.verifyEmailAction.bind(usersController)),
     );
 
@@ -42,6 +45,7 @@ export default function (router, models, config) {
     .route('/users/reset_password/request')
     .post(
       ExpressCoreUsersValidators.resetPasswordRequestValidator(models),
+      usersController.checkValidationErrors.bind(usersController),
       asyncHandler(usersController.resetPasswordRequestAction.bind(usersController)),
     );
 
@@ -50,6 +54,7 @@ export default function (router, models, config) {
     .route('/users/reset_password')
     .post(
       ExpressCoreUsersValidators.resetPasswordValidator(models),
+      usersController.checkValidationErrors.bind(usersController),
       asyncHandler(usersController.resetPasswordAction.bind(usersController)),
     );
 
@@ -58,6 +63,7 @@ export default function (router, models, config) {
     .route('/users/reset_password/check')
     .post(
       ExpressCoreUsersValidators.resetPasswordCheckValidator(models),
+      usersController.checkValidationErrors.bind(usersController),
       asyncHandler(usersController.resetPasswordCheckAction.bind(usersController)),
     );
 }

@@ -34,12 +34,7 @@ export default class UsersController extends BasicController {
    * @returns {Promise}
    */
   async signupUserAction(req, res) {
-    const errors = this.core.getValidationResult(req);
-    if (!errors.isEmpty()) {
-      return this.returnInvalidErrors(errors.array(), res);
-    }
-
-    const actionParams = this.core.getMatchedData(req);
+    const actionParams = this.getMatchedData(req);
 
     await this.core.ProcessSignUpUser(actionParams.email, actionParams.password);
     // sendVerificationEmail(newUser);
@@ -54,12 +49,7 @@ export default class UsersController extends BasicController {
    * @returns {Promise}
    */
   async verifyEmailResendAction(req, res) {
-    const errors = this.core.getValidationResult(req);
-    if (!errors.isEmpty()) {
-      return this.returnInvalidErrors(errors.array(), res);
-    }
-
-    const actionParams = this.core.getMatchedData(req);
+    const actionParams = this.getMatchedData(req);
 
     const user = await this.core.models.User.findByEmail(actionParams.email);
 
@@ -82,12 +72,7 @@ export default class UsersController extends BasicController {
    * @returns {Promise}
    */
   async verifyEmailAction(req, res) {
-    const errors = this.core.getValidationResult(req);
-    if (!errors.isEmpty()) {
-      return this.returnInvalidErrors(errors.array(), res);
-    }
-
-    const actionParams = this.core.getMatchedData(req);
+    const actionParams = this.getMatchedData(req);
 
     // find user by token
     const user = await this.core.models.User
@@ -108,12 +93,7 @@ export default class UsersController extends BasicController {
    * @returns {Promise}
    */
   async resetPasswordRequestAction(req, res) {
-    const errors = this.core.getValidationResult(req);
-    if (!errors.isEmpty()) {
-      return this.returnInvalidErrors(errors.array(), res);
-    }
-
-    const actionParams = this.core.getMatchedData(req);
+    const actionParams = this.getMatchedData(req);
 
     const user = await this.core.models.User.findByEmail(actionParams.email);
 
@@ -135,12 +115,7 @@ export default class UsersController extends BasicController {
    * @returns {Promise}
    */
   async resetPasswordAction(req, res) {
-    const errors = this.core.getValidationResult(req);
-    if (!errors.isEmpty()) {
-      return this.returnInvalidErrors(errors.array(), res);
-    }
-
-    const actionParams = this.core.getMatchedData(req);
+    const actionParams = this.getMatchedData(req);
 
     const user = await this.core.models.User.getUserByPasswordResetToken(actionParams.token);
     if (!user) {
@@ -160,12 +135,7 @@ export default class UsersController extends BasicController {
    * @returns {Promise}
    */
   async resetPasswordCheckAction(req, res) {
-    const errors = this.core.getValidationResult(req);
-    if (!errors.isEmpty()) {
-      return this.returnInvalidErrors(errors.array(), res);
-    }
-
-    const actionParams = this.core.getMatchedData(req);
+    const actionParams = this.getMatchedData(req);
 
     const user = await this.core.models.User.getUserByPasswordResetToken(actionParams.token);
     if (!user) {
