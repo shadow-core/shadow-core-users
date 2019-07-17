@@ -13,15 +13,34 @@ const asyncHandler = require('express-async-handler');
 export default function (router, models, config) {
   const usersController = new ExpressCoreUsersController(models, config);
 
-  // sign up user
+  const signupUserValidator = new ExpressCoreUsersValidators.SignupUserValidator(models);
+
+  console.log(ExpressCoreUsersValidators.SignupUserValidator);
+
   router
     .route('/users/signup')
     .post(
-      ExpressCoreUsersValidators.signupUserValidator(models),
-      usersController.checkValidationErrors.bind(usersController),
+      signupUserValidator.validators(),
+      usersController.validate.bind(usersController),
       asyncHandler(usersController.signupUserAction.bind(usersController)),
     );
 
+  // sign up user
+  /*
+  router
+    .route('/users/signup')
+    .post(
+      [
+        check('email').isEmail(),
+        check('email').isLength({ min: 1 }),
+      ],
+      //signupUserValidator.validators(),
+      usersController.validate.bind(usersController),
+      asyncHandler(usersController.signupUserAction.bind(usersController)),
+    );
+
+   */
+  /*
   // resend verification email
   router
     .route('/users/verify_email/resend')
@@ -66,4 +85,5 @@ export default function (router, models, config) {
       usersController.checkValidationErrors.bind(usersController),
       asyncHandler(usersController.resetPasswordCheckAction.bind(usersController)),
     );
+   */
 }

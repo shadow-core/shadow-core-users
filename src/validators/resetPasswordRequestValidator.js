@@ -1,6 +1,6 @@
 import validator from 'validator';
 
-const { checkSchema } = require('express-validator/check');
+const { checkSchema } = require('express-validator');
 const jsonResponses = require('../json_responses/resetPasswordRequest');
 
 export default function (models) {

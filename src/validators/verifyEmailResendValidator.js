@@ -1,4 +1,4 @@
-const { checkSchema } = require('express-validator/check');
+const { checkSchema } = require('express-validator');
 const jsonResponses = require('../json_responses/verifyEmailResend');
 
 export default function (models) {
