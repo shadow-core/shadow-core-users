@@ -1,17 +1,15 @@
 import SignupUserValidator from './SignupUserValidator';
+import VerifyEmailResendValidator from './VerifyEmailResendValidator';
+import VerifyEmailValidator from './VerifyEmailValidator';
+import ResetPasswordRequestValidator from './ResetPasswordRequestValidator';
+import ResetPasswordValidator from './ResetPasswordValidator';
+import ResetPasswordCheckValidator from './ResetPasswordCheckValidator';
 
-//const SignupUserValidator = require('./SignupUserValidator').default;
-const verifyEmailResendValidator = require('./verifyEmailResendValidator').default;
-const verifyEmailValidator = require('./verifyEmailValidator').default;
-const resetPasswordRequestValidator = require('./resetPasswordRequestValidator').default;
-const resetPasswordValidator = require('./resetPasswordValidator').default;
-const resetPasswordCheckValidator = require('./resetPasswordCheckValidator').default;
-
-export default {
+export {
   SignupUserValidator,
-  verifyEmailResendValidator,
-  verifyEmailValidator,
-  resetPasswordRequestValidator,
-  resetPasswordValidator,
-  resetPasswordCheckValidator,
+  VerifyEmailResendValidator,
+  VerifyEmailValidator,
+  ResetPasswordRequestValidator,
+  ResetPasswordValidator,
+  ResetPasswordCheckValidator,
 };

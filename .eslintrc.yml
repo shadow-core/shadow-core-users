@@ -18,6 +18,7 @@ rules:
   global-require: off
   arrow-body-style: off
   consistent-return: off
+  newline-per-chained-call: off
 overrides:
   - files: ["src/tests/*.js"]
     rules:

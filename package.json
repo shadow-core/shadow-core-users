@@ -1,6 +1,6 @@
 {
   "name": "shadow-core-users",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Users package for Shadow-core project.",
   "author": "Gray Hound",
   "license": "ISC",
@@ -16,7 +16,7 @@
     "express-async-handler": "^1.1.4",
     "express-validator": "^5.3.1",
     "mongoose": "^5.6.3",
-    "shadow-core-basic": "^0.0.4",
+    "shadow-core-basic": "^0.0.5",
     "validator": "^11.1.0"
   },
   "devDependencies": {
