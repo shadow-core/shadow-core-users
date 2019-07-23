@@ -38,6 +38,25 @@ export default function ExpressCoreUsersTestsResetPassword(server, apiPrefix, mo
             res.body.errors.should.be.a('array');
             res.body.errors.should.containSubset([{ code: 1, param: 'email' }]);
             res.body.errors.should.containSubset([{ code: 2, param: 'email' }]);
+            res.body.errors.should.not.containSubset([{ code: 3, param: 'email' }]);
+            done();
+          });
+      });
+
+      it('must return error email is not correct', (done) => {
+        const data = { email: 'testemail' };
+        chai.request(server)
+          .post(`${apiPrefix}/users/reset_password/request`)
+          .send(data)
+          .end((err, res) => {
+            res.should.have.status(422);
+            res.body.should.have.property('success').eq(false);
+            res.body.should.have.property('code').eq(422);
+            res.body.should.have.property('errors');
+            res.body.errors.should.be.a('array');
+            res.body.errors.should.not.containSubset([{ code: 1, param: 'email' }]);
+            res.body.errors.should.containSubset([{ code: 2, param: 'email' }]);
+            res.body.errors.should.not.containSubset([{ code: 3, param: 'email' }]);
             done();
           });
       });
@@ -53,6 +72,8 @@ export default function ExpressCoreUsersTestsResetPassword(server, apiPrefix, mo
             res.body.should.have.property('code').eq(422);
             res.body.should.have.property('errors');
             res.body.errors.should.be.a('array');
+            res.body.errors.should.not.containSubset([{ code: 1, param: 'email' }]);
+            res.body.errors.should.not.containSubset([{ code: 2, param: 'email' }]);
             res.body.errors.should.containSubset([{ code: 3, param: 'email' }]);
             done();
           });
@@ -220,6 +241,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, apiPrefix, mo
             res.body.errors.should.containSubset([{ code: 1, param: 'token' }]);
             res.body.errors.should.containSubset([{ code: 2, param: 'password' }]);
             res.body.errors.should.containSubset([{ code: 3, param: 'passwordCheck' }]);
+            res.body.errors.should.not.containSubset([{ code: 4, param: 'passwordCheck' }]);
             done();
           });
       });
@@ -235,8 +257,10 @@ export default function ExpressCoreUsersTestsResetPassword(server, apiPrefix, mo
             res.body.should.have.property('code').eq(422);
             res.body.should.have.property('errors');
             res.body.errors.should.be.a('array');
+            res.body.errors.should.not.containSubset([{ code: 1, param: 'token' }]);
             res.body.errors.should.containSubset([{ code: 2, param: 'password' }]);
             res.body.errors.should.containSubset([{ code: 3, param: 'passwordCheck' }]);
+            res.body.errors.should.not.containSubset([{ code: 4, param: 'passwordCheck' }]);
             done();
           });
       });
@@ -252,8 +276,10 @@ export default function ExpressCoreUsersTestsResetPassword(server, apiPrefix, mo
             res.body.should.have.property('code').eq(422);
             res.body.should.have.property('errors');
             res.body.errors.should.be.a('array');
+            res.body.errors.should.not.containSubset([{ code: 1, param: 'token' }]);
             res.body.errors.should.containSubset([{ code: 2, param: 'password' }]);
             res.body.errors.should.containSubset([{ code: 3, param: 'passwordCheck' }]);
+            res.body.errors.should.not.containSubset([{ code: 4, param: 'passwordCheck' }]);
             done();
           });
       });
@@ -269,7 +295,10 @@ export default function ExpressCoreUsersTestsResetPassword(server, apiPrefix, mo
             res.body.should.have.property('code').eq(422);
             res.body.should.have.property('errors');
             res.body.errors.should.be.a('array');
+            res.body.errors.should.not.containSubset([{ code: 1, param: 'token' }]);
+            res.body.errors.should.not.containSubset([{ code: 2, param: 'password' }]);
             res.body.errors.should.containSubset([{ code: 3, param: 'passwordCheck' }]);
+            res.body.errors.should.not.containSubset([{ code: 4, param: 'passwordCheck' }]);
             done();
           });
       });
@@ -285,7 +314,10 @@ export default function ExpressCoreUsersTestsResetPassword(server, apiPrefix, mo
             res.body.should.have.property('code').eq(422);
             res.body.should.have.property('errors');
             res.body.errors.should.be.a('array');
+            res.body.errors.should.not.containSubset([{ code: 1, param: 'token' }]);
             res.body.errors.should.containSubset([{ code: 2, param: 'password' }]);
+            res.body.errors.should.not.containSubset([{ code: 3, param: 'passwordCheck' }]);
+            res.body.errors.should.not.containSubset([{ code: 4, param: 'passwordCheck' }]);
             done();
           });
       });
@@ -301,6 +333,9 @@ export default function ExpressCoreUsersTestsResetPassword(server, apiPrefix, mo
             res.body.should.have.property('code').eq(422);
             res.body.should.have.property('errors');
             res.body.errors.should.be.a('array');
+            res.body.errors.should.not.containSubset([{ code: 1, param: 'token' }]);
+            res.body.errors.should.not.containSubset([{ code: 2, param: 'password' }]);
+            res.body.errors.should.not.containSubset([{ code: 3, param: 'passwordCheck' }]);
             res.body.errors.should.containSubset([{ code: 4, param: 'passwordCheck' }]);
             done();
           });

@@ -1,4 +1,5 @@
 import { BasicValidatorInterface } from 'shadow-core-basic';
+import validator from 'validator';
 
 const { body } = require('express-validator/check');
 const jsonResponses = require('../json_responses/signupUser');
@@ -37,24 +38,24 @@ export default class SignupUserValidator extends BasicValidatorInterface {
    * @return {function(*=): Promise<any | never>}
    */
   getEmailValidatorNotUnique() {
-    return ((value) => {
-      return new Promise((resolve, reject) => {
-        this.models.User.findByEmail(value, (err, user) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(user);
+    return ((value) => new Promise((resolve, reject) => {
+      if (!value) {
+        return resolve();
+      }
+      if (!validator.isEmail(value)) {
+        return resolve();
+      }
+      this.models.User.findByEmail(value, (err, user) => {
+        if (err) {
+          return reject();
+        } else {
+          if (user) {
+            return reject();
           }
-        });
-      }).then((user) => {
-        if (user) {
-          return false;
+          return resolve();
         }
-        return true;
-      }).catch((error) => {
-        console.log(error);
       });
-    });
+    }));
   }
 
   /**
@@ -64,7 +65,10 @@ export default class SignupUserValidator extends BasicValidatorInterface {
    */
   getPasswordCheckValidatorNotEqual() {
     return ((value, { req }) => {
-      return value === req.body.password;
+      if (value && req.body.password) {
+        return value === req.body.password;
+      }
+      return true;
     });
   }
 }

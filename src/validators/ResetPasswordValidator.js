@@ -21,7 +21,10 @@ export default class ResetPasswordValidator extends BasicValidatorInterface {
    */
   getPasswordCheckValidatorNotEqual() {
     return ((value, { req }) => {
-      return value === req.body.password;
+      if (value && req.body.password) {
+        return value === req.body.password;
+      }
+      return true;
     });
   }
 }
