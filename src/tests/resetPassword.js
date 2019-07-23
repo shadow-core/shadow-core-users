@@ -8,7 +8,7 @@ const { expect } = chai;
 chai.use(chaiHttp);
 chai.use(chaiSubset);
 
-export default function ExpressCoreUsersTestsResetPassword(server, models) {
+export default function ExpressCoreUsersTestsResetPassword(server, apiPrefix, models) {
   let token = null;
   let authToken = null;
 
@@ -16,7 +16,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
     describe('/users/reset_password/request', () => {
       it('must return 404 on get request', (done) => {
         chai.request(server)
-          .get('/api/v1/users/reset_password/request')
+          .get(`${apiPrefix}/users/reset_password/request`)
           .send()
           .end((err, res) => {
             res.should.have.status(404);
@@ -28,7 +28,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
 
       it('must return error if no data is provided', (done) => {
         chai.request(server)
-          .post('/api/v1/users/reset_password/request')
+          .post(`${apiPrefix}/users/reset_password/request`)
           .send()
           .end((err, res) => {
             res.should.have.status(422);
@@ -45,7 +45,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
       it('must return error if email does not exist', (done) => {
         const data = { email: 'testemail@gmail.com' };
         chai.request(server)
-          .post('/api/v1/users/reset_password/request')
+          .post(`${apiPrefix}/users/reset_password/request`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -71,7 +71,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
       it('must return success', (done) => {
         const data = { email: 'test@test.com' };
         chai.request(server)
-          .post('/api/v1/users/reset_password/request')
+          .post(`${apiPrefix}/users/reset_password/request`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -85,7 +85,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
       it('must return success', (done) => {
         const data = { email: 'test@test.com' };
         chai.request(server)
-          .post('/api/v1/users/reset_password/request')
+          .post(`${apiPrefix}/users/reset_password/request`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -99,7 +99,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
       it('must return success', (done) => {
         const data = { email: 'test@test.com' };
         chai.request(server)
-          .post('/api/v1/users/reset_password/request')
+          .post(`${apiPrefix}/users/reset_password/request`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -113,7 +113,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
       it('must return error because too much requests', (done) => {
         const data = { email: 'test@test.com' };
         chai.request(server)
-          .post('/api/v1/users/reset_password/request')
+          .post(`${apiPrefix}/users/reset_password/request`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(429);
@@ -138,7 +138,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
     describe('/users/reset_password/check', () => {
       it('must return 404 on get', (done) => {
         chai.request(server)
-          .get('/api/v1/users/reset_password/check')
+          .get(`${apiPrefix}/users/reset_password/check`)
           .send()
           .end((err, res) => {
             res.should.have.status(404);
@@ -150,7 +150,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
 
       it('must return error if no data is provided', (done) => {
         chai.request(server)
-          .post('/api/v1/users/reset_password/check')
+          .post(`${apiPrefix}/users/reset_password/check`)
           .send()
           .end((err, res) => {
             res.should.have.status(422);
@@ -166,7 +166,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
       it('must return error on random token', (done) => {
         const data = { token: 'somerandomtoken' };
         chai.request(server)
-          .post('/api/v1/users/reset_password/check')
+          .post(`${apiPrefix}/users/reset_password/check`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(404);
@@ -182,7 +182,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
       it('success on real token', (done) => {
         const data = { token };
         chai.request(server)
-          .post('/api/v1/users/reset_password/check')
+          .post(`${apiPrefix}/users/reset_password/check`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -197,7 +197,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
     describe('/users/reset_password', () => {
       it('must return 404 on get', (done) => {
         chai.request(server)
-          .get('/api/v1/users/reset_password')
+          .get(`${apiPrefix}/users/reset_password`)
           .send()
           .end((err, res) => {
             res.should.have.status(404);
@@ -209,7 +209,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
 
       it('must return error on empty data', (done) => {
         chai.request(server)
-          .post('/api/v1/users/reset_password')
+          .post(`${apiPrefix}/users/reset_password`)
           .send()
           .end((err, res) => {
             res.should.have.status(422);
@@ -227,7 +227,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
       it('must return error on incorrect token', (done) => {
         const data = { token: 'somerandomtoken' };
         chai.request(server)
-          .post('/api/v1/users/reset_password')
+          .post(`${apiPrefix}/users/reset_password`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -244,7 +244,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
       it('must return error if no passwords are provided', (done) => {
         const data = { token };
         chai.request(server)
-          .post('/api/v1/users/reset_password')
+          .post(`${apiPrefix}/users/reset_password`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -261,7 +261,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
       it('must return error if password check is not provided', (done) => {
         const data = { token, password: 'test' };
         chai.request(server)
-          .post('/api/v1/users/reset_password')
+          .post(`${apiPrefix}/users/reset_password`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -277,7 +277,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
       it('must return error if password is not provided', (done) => {
         const data = { token, passwordCheck: 'test' };
         chai.request(server)
-          .post('/api/v1/users/reset_password')
+          .post(`${apiPrefix}/users/reset_password`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -293,7 +293,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
       it('must return error if passwords are not equal', (done) => {
         const data = { token, password: 'Test', passwordCheck: 'test' };
         chai.request(server)
-          .post('/api/v1/users/reset_password')
+          .post(`${apiPrefix}/users/reset_password`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -309,7 +309,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
       it('must return success', (done) => {
         const data = { token, password: 'password', passwordCheck: 'password' };
         chai.request(server)
-          .post('/api/v1/users/reset_password')
+          .post(`${apiPrefix}/users/reset_password`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -323,7 +323,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
       it('must return error because we used token', (done) => {
         const data = { token, password: 'password', passwordCheck: 'password' };
         chai.request(server)
-          .post('/api/v1/users/reset_password')
+          .post(`${apiPrefix}/users/reset_password`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(404);
@@ -351,7 +351,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
           password: 'test',
         };
         chai.request(server)
-          .post('/api/v1/auth/user/token')
+          .post('${apiPrefix}/auth/user/token')
           .send(data)
           .end((err, res) => {
             res.should.have.status(401);
@@ -367,7 +367,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
           password: 'password',
         };
         chai.request(server)
-          .post('/api/v1/auth/user/token')
+          .post('${apiPrefix}/auth/user/token')
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -387,7 +387,7 @@ export default function ExpressCoreUsersTestsResetPassword(server, models) {
           new_password_check: 'test',
         };
         chai.request(server)
-          .post('/api/v1/profile/change_password')
+          .post('${apiPrefix}/profile/change_password')
           .set('Authorization', `Bearer ${authToken}`)
           .send(data)
           .end((err, res) => {

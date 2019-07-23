@@ -8,14 +8,15 @@ const { expect } = chai;
 chai.use(chaiHttp);
 chai.use(chaiSubset);
 
-export default function ExpressCoreUsersTestsSignup(server, models) {
+export default function ExpressCoreUsersTestsSignup(server, apiPrefix, models) {
   describe('User signup endpoint', () => {
     describe('GET /users/signup', () => {
       it('must return 404 on get request', (done) => {
         chai.request(server)
-          .get('/api/v1/users/signup')
+          .get(`${apiPrefix}/users/signup`)
           .send()
           .end((err, res) => {
+            console.log(`${apiPrefix}/users/signup`);
             res.should.have.status(404);
             res.body.should.have.property('success').eq(false);
             res.body.should.have.property('type').eq('endpoint');
@@ -26,7 +27,7 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
       it('should return error if there is no email', (done) => {
         const data = {};
         chai.request(server)
-          .post('/api/v1/users/signup')
+          .post(`${apiPrefix}/users/signup`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -45,7 +46,7 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
       it('should return error if email in wrong format', (done) => {
         const data = { email: 'test' };
         chai.request(server)
-          .post('/api/v1/users/signup')
+          .post(`${apiPrefix}/users/signup`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -63,7 +64,7 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
       it('should return error if none of passwords is provided', (done) => {
         const data = { email: 'test@test.com' };
         chai.request(server)
-          .post('/api/v1/users/signup')
+          .post(`${apiPrefix}/users/signup`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -80,7 +81,7 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
       it('should return error if is password only provided', (done) => {
         const data = { email: 'test@test.com', password: 'test' };
         chai.request(server)
-          .post('/api/v1/users/signup')
+          .post(`${apiPrefix}/users/signup`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -97,7 +98,7 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
       it('should return error if only password check provided', (done) => {
         const data = { email: 'test@test.com', passwordCheck: 'test' };
         chai.request(server)
-          .post('/api/v1/users/signup')
+          .post(`${apiPrefix}/users/signup`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -114,7 +115,7 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
       it('should return error passwords differ', (done) => {
         const data = { email: 'test@test.com', password: 'test', passwordCheck: 'password' };
         chai.request(server)
-          .post('/api/v1/users/signup')
+          .post(`${apiPrefix}/users/signup`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -130,7 +131,7 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
       it('should return error passwords differ only by uppercase', (done) => {
         const data = { email: 'test@test.com', password: 'test', passwordCheck: 'Test' };
         chai.request(server)
-          .post('/api/v1/users/signup')
+          .post(`${apiPrefix}/users/signup`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -146,7 +147,7 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
       it('should return success if everything is correct', (done) => {
         const data = { email: 'test@test.com', password: 'test', passwordCheck: 'test' };
         chai.request(server)
-          .post('/api/v1/users/signup')
+          .post(`${apiPrefix}/users/signup`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -172,7 +173,7 @@ export default function ExpressCoreUsersTestsSignup(server, models) {
       it('should return error because user with this email already exists', (done) => {
         const data = { email: 'test@test.com', password: 'test', passwordCheck: 'test' };
         chai.request(server)
-          .post('/api/v1/users/signup')
+          .post(`${apiPrefix}/users/signup`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
