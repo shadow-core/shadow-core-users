@@ -15,25 +15,24 @@ export default class ResetPasswordRequestValidator extends BasicValidatorInterfa
   }
 
   getEmailValidatorExists() {
-    return ((value) => {
-      const checkValue = value;
-      if (!validator.isEmail(checkValue)) {
-        return true;
+    return ((value, { req }) => new Promise((resolve, reject) => {
+      if (!value) {
+        return resolve();
       }
-      return new Promise(((resolve, reject) => {
-        this.models.User.findByEmail(checkValue, (err, user) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(user);
-          }
-        });
-      })).then((user) => {
-        if (user) {
-          return true;
+      if (!validator.isEmail(value)) {
+        return resolve();
+      }
+      this.models.User.findByEmail(value, (err, user) => {
+        if (err) {
+          return reject();
         }
-        return false;
+        if (user) {
+          this.user = user;
+          req.foundUser = this.user;
+          return resolve();
+        }
+        return reject();
       });
-    });
+    }));
   }
 }

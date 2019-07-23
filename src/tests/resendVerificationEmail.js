@@ -36,6 +36,7 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server, api
             res.body.errors.should.be.a('array');
             res.body.errors.should.containSubset([{ code: 1, param: 'email' }]);
             res.body.errors.should.containSubset([{ code: 2, param: 'email' }]);
+            res.body.errors.should.not.containSubset([{ code: 3, param: 'email' }]);
             done();
           });
       });
@@ -51,8 +52,9 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server, api
             res.body.should.have.property('code').eq(422);
             res.body.should.have.property('errors');
             res.body.errors.should.be.a('array');
+            res.body.errors.should.not.containSubset([{ code: 1, param: 'email' }]);
             res.body.errors.should.containSubset([{ code: 2, param: 'email' }]);
-            res.body.errors.should.containSubset([{ code: 3, param: 'email' }]);
+            res.body.errors.should.not.containSubset([{ code: 3, param: 'email' }]);
             done();
           });
       });
@@ -68,6 +70,8 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server, api
             res.body.should.have.property('code').eq(422);
             res.body.should.have.property('errors');
             res.body.errors.should.be.a('array');
+            res.body.errors.should.not.containSubset([{ code: 1, param: 'email' }]);
+            res.body.errors.should.not.containSubset([{ code: 2, param: 'email' }]);
             res.body.errors.should.containSubset([{ code: 3, param: 'email' }]);
             done();
           });
@@ -84,6 +88,9 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server, api
             res.body.should.have.property('code').eq(422);
             res.body.should.have.property('errors');
             res.body.errors.should.be.a('array');
+            res.body.errors.should.not.containSubset([{ code: 1, param: 'email' }]);
+            res.body.errors.should.not.containSubset([{ code: 2, param: 'email' }]);
+            res.body.errors.should.not.containSubset([{ code: 3, param: 'email' }]);
             res.body.errors.should.containSubset([{ code: 4, param: 'email' }]);
             done();
           });

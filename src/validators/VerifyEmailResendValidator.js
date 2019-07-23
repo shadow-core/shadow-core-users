@@ -1,4 +1,5 @@
 import { BasicValidatorInterface } from 'shadow-core-basic';
+import validator from 'validator';
 
 const { body } = require('express-validator/check');
 const jsonResponses = require('../json_responses/verifyEmailResend');
@@ -17,9 +18,12 @@ export default class VerifyEmailResendValidator extends BasicValidatorInterface 
   }
 
   getEmailValidatorExists() {
-    return ((value) => new Promise((resolve, reject) => {
+    return ((value, { req }) => new Promise((resolve, reject) => {
       if (!value) {
-        resolve(null);
+        return resolve();
+      }
+      if (!validator.isEmail(value)) {
+        return resolve();
       }
       this.models.User.findByEmail(value, (err, user) => {
         if (err) {
@@ -27,6 +31,7 @@ export default class VerifyEmailResendValidator extends BasicValidatorInterface 
         }
         if (user) {
           this.user = user;
+          req.foundUser = this.user;
           return resolve();
         }
         return reject();

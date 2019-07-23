@@ -49,9 +49,7 @@ export default class UsersController extends BasicController {
    * @returns {Promise}
    */
   async verifyEmailResendAction(req, res) {
-    const actionParams = this.getMatchedData(req);
-
-    const user = await this.core.models.User.findByEmail(actionParams.email);
+    const user = req.foundUser;
 
     // return error if too much requests
     if (this.core.checkTooMuchRequests(user)) {
@@ -93,9 +91,7 @@ export default class UsersController extends BasicController {
    * @returns {Promise}
    */
   async resetPasswordRequestAction(req, res) {
-    const actionParams = this.getMatchedData(req);
-
-    const user = await this.core.models.User.findByEmail(actionParams.email);
+    const user = req.foundUser;
 
     if (this.core.checkTooMuchResetPasswordRequests(user)) {
       return this.returnError(this.core.getJsonResponse('resetPasswordRequest', 'errorResetPasswordTooMuchRequests'), res, 429);
