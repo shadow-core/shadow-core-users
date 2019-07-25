@@ -3,7 +3,7 @@ import { BasicValidatorInterface } from 'shadow-core-basic';
 const { body } = require('express-validator/check');
 const jsonResponses = require('../json_responses/resetPasswordCheck');
 
-export default class ResetPasswordCheckValidator extends BasicValidatorInterface {
+export default class ResetPasswordCheckValidation extends BasicValidatorInterface {
   validators() {
     return [
       body('token').trim()

@@ -20,6 +20,7 @@ rules:
   consistent-return: off
   newline-per-chained-call: off
   quotes: ["error", "single", { "allowTemplateLiterals": true }]
+  no-param-reassign: ["error", { "props": false }]
 overrides:
   - files: ["src/tests/*.js"]
     rules:
