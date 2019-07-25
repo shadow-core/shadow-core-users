@@ -8,7 +8,7 @@ const { expect } = chai;
 chai.use(chaiHttp);
 chai.use(chaiSubset);
 
-export default function ExpressCoreUsersTestsSignup(server, apiPrefix, models) {
+export default function ExpressCoreUsersTestsSignup(server, apiPrefix, models, noVerif = false) {
   describe('User signup endpoint', () => {
     describe('GET /users/signup', () => {
       it('must return 404 on get request', (done) => {
@@ -189,7 +189,11 @@ export default function ExpressCoreUsersTestsSignup(server, apiPrefix, models) {
         models.User.findOne({ email: 'test@test.com' }).exec().then((user) => {
           user._id.should.exist;
           user.email.should.exist.eq('test@test.com');
-          user.isEmailVerified.should.exist.eq(false);
+          if (noVerif) {
+            user.isEmailVerified.should.exist.eq(true);
+          } else {
+            user.isEmailVerified.should.exist.eq(false);
+          }
           user.resetPasswordIsRequested.should.exist.eq(false);
           user.resetPasswordRequestsAmount.should.exist.eq(0);
           user.verificationCode.should.exist;
@@ -215,7 +219,11 @@ export default function ExpressCoreUsersTestsSignup(server, apiPrefix, models) {
         models.User.findOne({ email: 'test2@test.com' }).exec().then((user) => {
           user._id.should.exist;
           user.email.should.exist.eq('test2@test.com');
-          user.isEmailVerified.should.exist.eq(false);
+          if (noVerif) {
+            user.isEmailVerified.should.exist.eq(true);
+          } else {
+            user.isEmailVerified.should.exist.eq(false);
+          }
           user.resetPasswordIsRequested.should.exist.eq(false);
           user.resetPasswordRequestsAmount.should.exist.eq(0);
           user.verificationCode.should.exist;

@@ -34,7 +34,7 @@ export default function (router, models, config) {
 
 
   // there's not need for these routes if there's no verification by email
-  if (config.mustVerifyEmail) {
+  if (config.mustVerifyEmail !== false) {
     // resend verification email
     router
       .route('/users/verify_email/resend')

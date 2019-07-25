@@ -11,6 +11,10 @@ import ExpressCoreUsersTestsEmailVerification from './tests/emailVerification';
 import ExpressCoreUsersTestsResendVerificationEmail from './tests/resendVerificationEmail';
 import ExpressCoreUsersTestsResetPassword from './tests/resetPassword';
 
+import ExpressCoreUsersTestsEmailVerificationEmpty from './tests/emailVerificationEmpty';
+import ExpressCoreUsersTestsResendVerificationEmailEmpty from './tests/resendVerificationEmailEmpty';
+
+
 export {
   // export main classes
   ExpressCoreUsers,
@@ -26,4 +30,7 @@ export {
   ExpressCoreUsersTestsEmailVerification,
   ExpressCoreUsersTestsResendVerificationEmail,
   ExpressCoreUsersTestsResetPassword,
+
+  ExpressCoreUsersTestsEmailVerificationEmpty,
+  ExpressCoreUsersTestsResendVerificationEmailEmpty,
 };
