@@ -89,8 +89,8 @@ export default function ExpressCoreUsersTestsResetPassword(server, apiPrefix, mo
       });
 
 
-      it('must return success', (done) => {
-        const data = { email: 'test@test.com' };
+      it('must return success - check trim()', (done) => {
+        const data = { email: '      test@test.com      ' };
         chai.request(server)
           .post(`${apiPrefix}/users/reset_password/request`)
           .send(data)
@@ -213,6 +213,20 @@ export default function ExpressCoreUsersTestsResetPassword(server, apiPrefix, mo
             done();
           });
       });
+
+      it('success on real token with some spaces - trim should work', (done) => {
+        const data = { token: `      ${token}   ` };
+        chai.request(server)
+          .post(`${apiPrefix}/users/reset_password/check`)
+          .send(data)
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.have.property('success').eq(true);
+            res.body.should.have.property('code').eq(100);
+            res.body.should.have.property('message');
+            done();
+          });
+      });
     });
 
     describe('/users/reset_password', () => {
@@ -267,6 +281,25 @@ export default function ExpressCoreUsersTestsResetPassword(server, apiPrefix, mo
 
       it('must return error if no passwords are provided', (done) => {
         const data = { token };
+        chai.request(server)
+          .post(`${apiPrefix}/users/reset_password`)
+          .send(data)
+          .end((err, res) => {
+            res.should.have.status(422);
+            res.body.should.have.property('success').eq(false);
+            res.body.should.have.property('code').eq(422);
+            res.body.should.have.property('errors');
+            res.body.errors.should.be.a('array');
+            res.body.errors.should.not.containSubset([{ code: 1, param: 'token' }]);
+            res.body.errors.should.containSubset([{ code: 2, param: 'password' }]);
+            res.body.errors.should.containSubset([{ code: 3, param: 'passwordCheck' }]);
+            res.body.errors.should.not.containSubset([{ code: 4, param: 'passwordCheck' }]);
+            done();
+          });
+      });
+
+      it('must return error if no passwords are provided but should find token - trim()', (done) => {
+        const data = { token: `          ${token}   ` };
         chai.request(server)
           .post(`${apiPrefix}/users/reset_password`)
           .send(data)

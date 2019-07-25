@@ -197,6 +197,33 @@ export default function ExpressCoreUsersTestsSignup(server, apiPrefix, models) {
         });
       });
 
+      it('should return success if everything is correct - check trim()', (done) => {
+        const data = { email: '     test2@test.com      ', password: 'test', passwordCheck: 'test' };
+        chai.request(server)
+          .post(`${apiPrefix}/users/signup`)
+          .send(data)
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.have.property('success').eq(true);
+            res.body.should.have.property('code').eq(100);
+            res.body.should.have.property('message');
+            done();
+          });
+      });
+
+      it('user data must be correct', (done) => {
+        models.User.findOne({ email: 'test2@test.com' }).exec().then((user) => {
+          user._id.should.exist;
+          user.email.should.exist.eq('test2@test.com');
+          user.isEmailVerified.should.exist.eq(false);
+          user.resetPasswordIsRequested.should.exist.eq(false);
+          user.resetPasswordRequestsAmount.should.exist.eq(0);
+          user.verificationCode.should.exist;
+          done();
+        });
+      });
+
+
       it('should return error because user with this email already exists', (done) => {
         const data = { email: 'test@test.com', password: 'test', passwordCheck: 'test' };
         chai.request(server)

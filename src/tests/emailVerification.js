@@ -10,6 +10,7 @@ chai.use(chaiSubset);
 
 export default function TestExpressCoreUsersEmailVerification(server, apiPrefix, models) {
   let verificationToken = '';
+  let verificationToken2 = '';
 
   describe('User email verification endpoint', () => {
     describe('POST /users/verify_email', () => {
@@ -68,6 +69,30 @@ export default function TestExpressCoreUsersEmailVerification(server, apiPrefix,
 
       it('must return success for correct token', (done) => {
         const data = { verificationToken };
+        chai.request(server)
+          .post(`${apiPrefix}/users/verify_email`)
+          .send(data)
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.have.property('success').eq(true);
+            res.body.should.have.property('code').eq(100);
+            res.body.should.have.property('message');
+            done();
+          });
+      });
+
+      it('user data must be correct', (done) => {
+        models.User.findOne({ email: 'test2@test.com' }).exec().then((user) => {
+          user._id.should.exist;
+          user.isEmailVerified.should.equal(false);
+          user.verificationCode.should.exist;
+          verificationToken2 = user.verificationCode;
+          done();
+        });
+      });
+
+      it('must return success for correct token - check trim()', (done) => {
+        const data = { verificationToken: `   ${verificationToken2}    ` };
         chai.request(server)
           .post(`${apiPrefix}/users/verify_email`)
           .send(data)

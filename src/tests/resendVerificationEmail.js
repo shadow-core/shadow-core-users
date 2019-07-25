@@ -110,8 +110,8 @@ export default function ExpressCoreUsersTestsResendVerificationEmail(server, api
           });
       });
 
-      it('should return success', (done) => {
-        const data = { email: 'admin+verify@test.com' };
+      it('should return success - check trim()', (done) => {
+        const data = { email: '       admin+verify@test.com        ' };
         chai.request(server)
           .post(`${apiPrefix}/users/verify_email/resend`)
           .send(data)
