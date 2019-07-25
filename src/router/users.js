@@ -33,23 +33,26 @@ export default function (router, models, config) {
     );
 
 
-  // resend verification email
-  router
-    .route('/users/verify_email/resend')
-    .post(
-      verifyEmailResendValidation.validators(),
-      usersController.validate.bind(usersController),
-      asyncHandler(usersController.verifyEmailResendAction.bind(usersController)),
-    );
+  // there's not need for these routes if there's no verification by email
+  if (config.mustVerifyEmail) {
+    // resend verification email
+    router
+      .route('/users/verify_email/resend')
+      .post(
+        verifyEmailResendValidation.validators(),
+        usersController.validate.bind(usersController),
+        asyncHandler(usersController.verifyEmailResendAction.bind(usersController)),
+      );
 
-  // verify email
-  router
-    .route('/users/verify_email')
-    .post(
-      verifyEmailValidation.validators(),
-      usersController.validate.bind(usersController),
-      asyncHandler(usersController.verifyEmailAction.bind(usersController)),
-    );
+    // verify email
+    router
+      .route('/users/verify_email')
+      .post(
+        verifyEmailValidation.validators(),
+        usersController.validate.bind(usersController),
+        asyncHandler(usersController.verifyEmailAction.bind(usersController)),
+      );
+  }
 
   // request password reset
   router

@@ -17,14 +17,16 @@ export default class ExpressCoreUsers extends ExpressCoreBasic {
     super();
     this.models = models;
 
-    const chkConfig = config;
     // by default only three requests are allowed in one hour
-    if (chkConfig.verification_timeout === undefined) chkConfig.verification_timeout = 3600 * 1000;
-    if (chkConfig.verification_amount === undefined) chkConfig.verification_amount = 3;
-    if (chkConfig.password_reset_timeout === undefined) chkConfig.password_reset_timeout = 3600 * 1000;
-    if (chkConfig.password_reset_amount === undefined) chkConfig.password_reset_amount = 3;
+    if (config.verification_timeout === undefined) config.verification_timeout = 3600 * 1000;
+    if (config.verification_amount === undefined) config.verification_amount = 3;
+    if (config.password_reset_timeout === undefined) config.password_reset_timeout = 3600 * 1000;
+    if (config.password_reset_amount === undefined) config.password_reset_amount = 3;
+    // default verification values
+    if (config.maxVerificationTime === undefined) config.maxVerificationTime = 7 * 24 * 3600 * 1000;
+    if (config.mustVerifyEmail === undefined) config.mustVerifyEmail = true;
 
-    this.config = chkConfig;
+    this.config = config;
 
     this.addJsonResponses('signupUser', require('./json_responses/signupUser'));
     this.addJsonResponses('verifyEmailResend', require('./json_responses/verifyEmailResend'));
@@ -44,10 +46,18 @@ export default class ExpressCoreUsers extends ExpressCoreBasic {
   async ProcessSignUpUser(email, password) {
     const verificationCode = crypto.randomBytes(64).toString('hex');
 
+    // check if email should be verified
+    let isEmailVerified = false;
+    if (this.config.mustVerifyEmail === false) {
+      isEmailVerified = true;
+    }
+
+    const password_hash = bcrypt.hashSync(password, 10);
+
     const newUser = new this.models.User({
       email,
-      password_hash: bcrypt.hashSync(password, 10),
-      isEmailVerified: false,
+      password_hash,
+      isEmailVerified,
       verificationCode,
     });
     await newUser.save();
