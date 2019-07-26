@@ -7,7 +7,7 @@ import validator from 'validator';
  * @return {function(*=, {req?: *}): Promise<any>}
  * @constructor
  */
-export default function GetEmailValidatorExists(validation) {
+export default function EmailExistsValidator(validation) {
   return ((value, { req }) => new Promise((resolve, reject) => {
     if (!value) {
       return resolve();

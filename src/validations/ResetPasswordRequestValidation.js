@@ -1,5 +1,5 @@
 import { BasicValidatorInterface } from 'shadow-core-basic';
-import GetEmailValidatorExists from './validators/GetEmailValidatorExists';
+import EmailExistsValidator from './validators/EmailExistsValidator';
 
 const { body } = require('express-validator/check');
 const jsonResponses = require('../json_responses/resetPasswordRequest');
@@ -10,7 +10,7 @@ export default class ResetPasswordRequestValidation extends BasicValidatorInterf
       body('email').trim()
         .not().isEmpty().withMessage(jsonResponses.errorEmailIsLength)
         .isEmail().withMessage(jsonResponses.errorEmailFormat)
-        .custom(GetEmailValidatorExists(this)).withMessage(jsonResponses.errorNoUser),
+        .custom(EmailExistsValidator(this)).withMessage(jsonResponses.errorNoUser),
     ];
   }
 }

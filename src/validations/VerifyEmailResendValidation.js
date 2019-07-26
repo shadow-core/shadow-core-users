@@ -1,5 +1,6 @@
 import { BasicValidatorInterface } from 'shadow-core-basic';
-import GetEmailValidatorExists from './validators/GetEmailValidatorExists';
+import EmailExistsValidator from './validators/EmailExistsValidator';
+import EmailVerifiedValidator from './validators/EmailVerifiedValidator';
 
 const { body } = require('express-validator/check');
 const jsonResponses = require('../json_responses/verifyEmailResend');
@@ -13,19 +14,7 @@ export default class VerifyEmailResendValidation extends BasicValidatorInterface
     return body('email').trim().not()
       .isEmpty().withMessage(jsonResponses.errorEmailIsLength)
       .isEmail().withMessage(jsonResponses.errorEmailFormat)
-      .custom(GetEmailValidatorExists(this)).withMessage(jsonResponses.errorNoUser)
-      .custom(this.getEmailValidatorVerified()).withMessage(jsonResponses.errorVerified);
-  }
-
-  getEmailValidatorVerified() {
-    return ((value) => {
-      if (!value) {
-        return true;
-      }
-      if (!this.user) {
-        return true;
-      }
-      return (this.user.isEmailVerified !== true);
-    });
+      .custom(EmailExistsValidator(this)).withMessage(jsonResponses.errorNoUser)
+      .custom(EmailVerifiedValidator(this)).withMessage(jsonResponses.errorVerified);
   }
 }
