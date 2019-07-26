@@ -1,6 +1,6 @@
 // main classes
 import ExpressCoreUsers from './ExpressCoreUsers';
-import ExpressCoreUsersValidators from './validators';
+import ExpressCoreUsersValidations from './validations';
 import UsersController from './controllers/user';
 import UserSchema from './schemas/user';
 import UserRouter from './router/users';
@@ -18,7 +18,7 @@ import ExpressCoreUsersTestsResendVerificationEmailEmpty from './tests/resendVer
 export {
   // export main classes
   ExpressCoreUsers,
-  ExpressCoreUsersValidators,
+  ExpressCoreUsersValidations,
   UsersController,
   // Schema
   UserSchema,

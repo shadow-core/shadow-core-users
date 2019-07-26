@@ -16,9 +16,7 @@ export default class UsersController extends BasicController {
    * @param {Object} config Additional configuration things.
    */
   constructor(models, config = {}) {
-    super();
-    this.models = models;
-    this.config = config;
+    super(models, config);
     this.core = new ExpressCoreUsers(this.models, this.config);
   }
 

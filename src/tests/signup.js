@@ -16,7 +16,6 @@ export default function ExpressCoreUsersTestsSignup(server, apiPrefix, models, n
           .get(`${apiPrefix}/users/signup`)
           .send()
           .end((err, res) => {
-            console.log(`${apiPrefix}/users/signup`);
             res.should.have.status(404);
             res.body.should.have.property('success').eq(false);
             res.body.should.have.property('type').eq('endpoint');
