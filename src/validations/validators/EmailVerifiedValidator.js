@@ -1,4 +1,4 @@
-export default function EmailValidatorVerified(validation) {
+export default function EmailVerifiedValidator(validation) {
   return ((value) => {
     if (!value) {
       return true;
