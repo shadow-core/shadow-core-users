@@ -12,9 +12,9 @@ const jsonResponses = require('../json_responses/verifyEmailResend');
 export default class VerifyEmailResendValidation extends BasicValidatorInterface {
   validators() {
     return body('email').trim().not()
-      .isEmpty().withMessage(jsonResponses.errorEmailIsLength)
-      .isEmail().withMessage(jsonResponses.errorEmailFormat)
-      .custom(EmailExistsValidator(this)).withMessage(jsonResponses.errorNoUser)
-      .custom(EmailVerifiedValidator(this)).withMessage(jsonResponses.errorVerified);
+      .isEmpty().withMessage(jsonResponses.errors.email.empty)
+      .isEmail().withMessage(jsonResponses.errors.email.format)
+      .custom(EmailExistsValidator(this)).withMessage(jsonResponses.errors.email.noUser)
+      .custom(EmailVerifiedValidator(this)).withMessage(jsonResponses.errors.email.verified);
   }
 }

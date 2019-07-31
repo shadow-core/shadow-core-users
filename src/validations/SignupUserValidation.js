@@ -19,18 +19,18 @@ export default class SignupUserValidation extends BasicValidatorInterface {
     return [
       // email
       body('email').trim()
-        .not().isEmpty().withMessage(jsonResponses.errorEmailIsLength)
-        .isEmail().withMessage(jsonResponses.errorEmailFormat)
+        .not().isEmpty().withMessage(jsonResponses.errors.email.empty)
+        .isEmail().withMessage(jsonResponses.errors.email.format)
         .custom(GetEmailValidatorNotUnique(this))
-        .withMessage(jsonResponses.errorEmailIsNotUnique),
+        .withMessage(jsonResponses.errors.email.notUnique),
 
       // password
-      body('password').not().isEmpty().withMessage(jsonResponses.errorPasswordIsLength),
+      body('password').not().isEmpty().withMessage(jsonResponses.errors.password.empty),
 
       // password check
-      body('passwordCheck').not().isEmpty().withMessage(jsonResponses.errorPasswordCheckIsLength)
+      body('passwordCheck').not().isEmpty().withMessage(jsonResponses.errors.passwordCheck.empty)
         .custom(GetPasswordCheckValidatorNotEqual())
-        .withMessage(jsonResponses.errorPasswordsNotEqual),
+        .withMessage(jsonResponses.errors.passwordCheck.notEqual),
     ];
   }
 

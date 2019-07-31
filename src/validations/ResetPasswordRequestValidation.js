@@ -8,9 +8,9 @@ export default class ResetPasswordRequestValidation extends BasicValidatorInterf
   validators() {
     return [
       body('email').trim()
-        .not().isEmpty().withMessage(jsonResponses.errorEmailIsLength)
-        .isEmail().withMessage(jsonResponses.errorEmailFormat)
-        .custom(EmailExistsValidator(this)).withMessage(jsonResponses.errorNoUser),
+        .not().isEmpty().withMessage(jsonResponses.errors.email.empty)
+        .isEmail().withMessage(jsonResponses.errors.email.format)
+        .custom(EmailExistsValidator(this)).withMessage(jsonResponses.errors.email.noUser),
     ];
   }
 }

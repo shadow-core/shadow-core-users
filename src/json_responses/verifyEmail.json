@@ -1,11 +1,15 @@
 {
-  "errorNoVerificationToken": {
-    "code": 1,
-    "message": "You must provide verification token"
-  },
-  "errorVerificationTokenOld": {
-    "code": 404,
-    "message": "Email verification token is incorrect or outdated"
+  "errors": {
+    "token": {
+      "empty": {
+        "code": 1,
+        "message": "You must provide verification token"
+      },
+      "old": {
+        "code": 404,
+        "message": "Email verification token is incorrect or outdated"
+      }
+    }
   },
   "success": {
     "code": 100,

@@ -1,30 +1,38 @@
 {
-    "errorEmailIsLength": {
+  "errors": {
+    "email": {
+      "empty": {
         "code": 1,
         "message": "Please, provide email. This cannot be empty"
-    },
-    "errorEmailFormat": {
+      },
+      "format": {
         "code": 2,
         "message": "Please, provide correct email"
-    },
-    "errorEmailIsNotUnique": {
+      },
+      "notUnique": {
         "code": 3,
         "message": "Someone already registered this email"
+      }
     },
-    "errorPasswordIsLength": {
+    "password": {
+      "empty": {
         "code": 4,
         "message": "Please provide password field. This cannot be empty"
+      }
     },
-    "errorPasswordCheckIsLength": {
+    "passwordCheck": {
+      "empty": {
         "code": 5,
         "message": "Please provide password confirmation field. This cannot be empty"
-    },
-    "errorPasswordsNotEqual": {
+      },
+      "notEqual": {
         "code": 6,
         "message": "Both 'password' and 'password_check' fields must be equal"
-    },
-    "success": {
-        "code": 100,
-        "message": "User has been successfully signed up"
+      }
     }
+  },
+  "success": {
+    "code": 100,
+    "message": "User has been successfully signed up"
+  }
 }

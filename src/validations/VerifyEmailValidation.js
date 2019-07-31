@@ -7,7 +7,7 @@ export default class VerifyEmailValidation extends BasicValidatorInterface {
   validators() {
     return [
       body('verificationToken').trim().not().isEmpty()
-        .withMessage(jsonResponses.errorNoVerificationToken),
+        .withMessage(jsonResponses.errors.token.empty),
     ];
   }
 }

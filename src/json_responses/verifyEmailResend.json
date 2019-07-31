@@ -1,23 +1,27 @@
 {
-  "errorEmailIsLength": {
-    "code": 1,
-    "message": "Please, provide email. This cannot be empty"
-  },
-  "errorEmailFormat": {
-    "code": 2,
-    "message": "Please, provide correct email"
-  },
-  "errorNoUser": {
-    "code": 3,
-    "message": "User with this email does not exist"
-  },
-  "errorVerified": {
-    "code": 4,
-    "message": "This email is verified already"
-  },
-  "errorTooMuchRequests": {
-    "code": 429,
-    "message": "Too much requests for this email. Please try again later"
+  "errors": {
+    "email": {
+      "empty": {
+        "code": 1,
+        "message": "Please, provide email. This cannot be empty"
+      },
+      "format": {
+        "code": 2,
+        "message": "Please, provide correct email"
+      },
+      "noUser": {
+        "code": 3,
+        "message": "User with this email does not exist"
+      },
+      "verified": {
+        "code": 4,
+        "message": "This email is verified already"
+      },
+      "requests": {
+        "code": 429,
+        "message": "Too much requests for this email. Please try again later"
+      }
+    }
   },
   "success": {
     "code": 100,

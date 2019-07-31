@@ -7,7 +7,7 @@ export default class ResetPasswordCheckValidation extends BasicValidatorInterfac
   validators() {
     return [
       body('token').trim()
-        .not().isEmpty().withMessage(jsonResponses.errorTokenIsLength),
+        .not().isEmpty().withMessage(jsonResponses.errors.token.empty),
     ];
   }
 }

@@ -51,7 +51,7 @@ export default class UsersController extends BasicController {
 
     // return error if too much requests
     if (this.core.checkTooMuchRequests(user)) {
-      return this.returnError(this.core.getJsonResponse('verifyEmailResend', 'errorTooMuchRequests'), res, 429);
+      return this.returnError(this.core.jsonResponses.verifyEmailResend.errors.email.requests, res, 429);
     }
 
     // send email, add counter and return success
@@ -92,7 +92,10 @@ export default class UsersController extends BasicController {
     const user = req.foundUser;
 
     if (this.core.checkTooMuchResetPasswordRequests(user)) {
-      return this.returnError(this.core.getJsonResponse('resetPasswordRequest', 'errorResetPasswordTooMuchRequests'), res, 429);
+      return this.returnError(
+        this.core.jsonResponses.resetPasswordRequest.errors.email.requests,
+        res, 429,
+      );
     }
 
     // seems like we can send reset password
