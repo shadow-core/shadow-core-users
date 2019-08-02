@@ -15,7 +15,7 @@ export default function EmailExistsValidator(validation) {
     if (!validator.isEmail(value)) {
       return resolve();
     }
-    validation.models.User.findByEmail(value, (err, user) => {
+    validation.app.models.User.findByEmail(value, (err, user) => {
       if (err) {
         return reject();
       }

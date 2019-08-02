@@ -10,7 +10,7 @@ const UserSchema = new Schema({
     trim: true,
     index: true,
   },
-  password_hash: { type: 'String', required: true },
+  passwordHash: { type: 'String', required: true },
   isEmailVerified: {
     type: mongoose.Schema.Types.Boolean,
     default: false,
@@ -106,7 +106,7 @@ UserSchema.methods = {
   checkResetPasswordRequestRule(config) {
     const checkTime = this.resetPasswordRequestDate.getTime() + config.password_reset_timeout;
     return ((checkTime > Date.now())
-      && (this.resetPasswordRequestsAmount >= config.password_reset_amount))
+      && (this.resetPasswordRequestsAmount >= config.password_reset_amount));
   },
 
   /**

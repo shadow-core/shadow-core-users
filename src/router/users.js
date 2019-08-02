@@ -10,69 +10,72 @@ const asyncHandler = require('express-async-handler');
  * @param {Object} models Application models
  * @param {Object} config Additional configuration
  */
-export default function (router, models, config) {
-  const userController = new UserController(models, config);
+export default function (app) {
+  const userController = new UserController(app);
 
-  const signupUserValidation = new UserValidations.SignupUserValidation(models);
-  const verifyEmailResendValidation = new UserValidations.VerifyEmailResendValidation(models);
-  const verifyEmailValidation = new UserValidations.VerifyEmailValidation(models);
-  const resetPasswordRequestValidation = new UserValidations.ResetPasswordRequestValidation(models);
-  const resetPasswordValidation = new UserValidations.ResetPasswordValidation(models);
-  const resetPasswordCheckValidation = new UserValidations.ResetPasswordCheckValidation(models);
+  const validations = {
+    signupUser: new UserValidations.SignupUserValidation(app),
+    verifyEmailResend: new UserValidations.VerifyEmailResendValidation(app),
+    verifyEmail: new UserValidations.VerifyEmailValidation(app),
+    resetPasswordRequest: new UserValidations.ResetPasswordRequestValidation(app),
+    resetPassword: new UserValidations.ResetPasswordValidation(app),
+    resetPasswordCheck: new UserValidations.ResetPasswordCheckValidation(app),
+  };
 
-  router
+  app.router
     .route('/users/signup')
     .post(
-      signupUserValidation.validators(),
+      validations.signupUser.validators(),
       userController.validate.bind(userController),
       asyncHandler(userController.signupUserAction.bind(userController)),
     );
 
 
   // there's not need for these routes if there's no verification by email
-  if (config.mustVerifyEmail !== false) {
+  if (app.config.users.mustVerifyEmail !== false) {
+    console.log(123);
     // resend verification email
-    router
+    app.router
       .route('/users/verify_email/resend')
       .post(
-        verifyEmailResendValidation.validators(),
+        validations.verifyEmailResend.validators(),
         userController.validate.bind(userController),
         asyncHandler(userController.verifyEmailResendAction.bind(userController)),
       );
 
     // verify email
-    router
+    app.router
       .route('/users/verify_email')
       .post(
-        verifyEmailValidation.validators(),
+        validations.verifyEmail.validators(),
         userController.validate.bind(userController),
         asyncHandler(userController.verifyEmailAction.bind(userController)),
       );
   }
 
   // request password reset
-  router
+  app.router
     .route('/users/reset_password/request')
     .post(
-      resetPasswordRequestValidation.validators(),
+      validations.resetPasswordRequest.validators(),
       userController.validate.bind(userController),
       asyncHandler(userController.resetPasswordRequestAction.bind(userController)),
     );
 
   // reset password
-  router
+  app.router
     .route('/users/reset_password')
     .post(
-      resetPasswordValidation.validators(),
+      validations.resetPassword.validators(),
       userController.validate.bind(userController),
       asyncHandler(userController.resetPasswordAction.bind(userController)),
     );
 
   // check reset password token
-  router
+  app.router
     .route('/users/reset_password/check')
     .post(
-      resetPasswordCheckValidation.validators(),
+      validations.resetPasswordCheck.validators(),
       userController.validate.bind(userController),
       asyncHandler(userController.resetPasswordCheckAction.bind(userController)),
     );

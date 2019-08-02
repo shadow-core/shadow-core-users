@@ -8,12 +8,12 @@ const { expect } = chai;
 chai.use(chaiHttp);
 chai.use(chaiSubset);
 
-export default function ResendVerificationEmail(server, apiPrefix) {
+export default function ResendVerificationEmail(app, options = {}) {
   describe('Resend verification email endpoint', () => {
     describe('GET /users/verify_email/resend', () => {
       it('must return 404 on get request', (done) => {
-        chai.request(server)
-          .get(`${apiPrefix}/users/verify_email/resend`)
+        chai.request(app.server)
+          .get(`${options.apiPrefix}/users/verify_email/resend`)
           .send()
           .end((err, res) => {
             res.should.have.status(404);
@@ -25,8 +25,8 @@ export default function ResendVerificationEmail(server, apiPrefix) {
 
       it('should return error if there is no email', (done) => {
         const data = {};
-        chai.request(server)
-          .post(`${apiPrefix}/users/verify_email/resend`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/verify_email/resend`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -43,8 +43,8 @@ export default function ResendVerificationEmail(server, apiPrefix) {
 
       it('should return error if email in wrong format', (done) => {
         const data = { email: 'admin' };
-        chai.request(server)
-          .post(`${apiPrefix}/users/verify_email/resend`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/verify_email/resend`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -61,8 +61,8 @@ export default function ResendVerificationEmail(server, apiPrefix) {
 
       it('should return error if there is not such user in the database', (done) => {
         const data = { email: 'admin+testtestestest@test.com' };
-        chai.request(server)
-          .post(`${apiPrefix}/users/verify_email/resend`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/verify_email/resend`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -79,8 +79,8 @@ export default function ResendVerificationEmail(server, apiPrefix) {
 
       it('should return error email is already verified', (done) => {
         const data = { email: 'test@test.com' };
-        chai.request(server)
-          .post(`${apiPrefix}/users/verify_email/resend`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/verify_email/resend`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -98,8 +98,8 @@ export default function ResendVerificationEmail(server, apiPrefix) {
 
       it('should return success if everything is correct', (done) => {
         const data = { email: 'admin+verify@test.com', password: 'admin', passwordCheck: 'admin' };
-        chai.request(server)
-          .post(`${apiPrefix}/users/signup`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/signup`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -112,8 +112,8 @@ export default function ResendVerificationEmail(server, apiPrefix) {
 
       it('should return success - check trim()', (done) => {
         const data = { email: '       admin+verify@test.com        ' };
-        chai.request(server)
-          .post(`${apiPrefix}/users/verify_email/resend`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/verify_email/resend`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -126,8 +126,8 @@ export default function ResendVerificationEmail(server, apiPrefix) {
 
       it('should return success', (done) => {
         const data = { email: 'admin+verify@test.com' };
-        chai.request(server)
-          .post(`${apiPrefix}/users/verify_email/resend`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/verify_email/resend`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -140,8 +140,8 @@ export default function ResendVerificationEmail(server, apiPrefix) {
 
       it('should return success', (done) => {
         const data = { email: 'admin+verify@test.com' };
-        chai.request(server)
-          .post(`${apiPrefix}/users/verify_email/resend`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/verify_email/resend`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -154,8 +154,8 @@ export default function ResendVerificationEmail(server, apiPrefix) {
 
       it('should return error - too much requests', (done) => {
         const data = { email: 'admin+verify@test.com' };
-        chai.request(server)
-          .post(`${apiPrefix}/users/verify_email/resend`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/verify_email/resend`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(429);

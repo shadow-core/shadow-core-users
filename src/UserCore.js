@@ -9,24 +9,34 @@ const bcrypt = require('bcryptjs');
  */
 export default class UserCore extends ExpressCoreBasic {
   /**
-   * Prepare json responses and get list if models.
+   * UserCore consttructor.
    *
-   * @param {Object} models
+   * @param {Object} app
    */
-  constructor(models, config) {
-    super();
-    this.models = models;
+  constructor(app) {
+    super(app);
 
     // by default only three requests are allowed in one hour
-    if (config.verification_timeout === undefined) config.verification_timeout = 3600 * 1000;
-    if (config.verification_amount === undefined) config.verification_amount = 3;
-    if (config.password_reset_timeout === undefined) config.password_reset_timeout = 3600 * 1000;
-    if (config.password_reset_amount === undefined) config.password_reset_amount = 3;
-    // default verification values
-    if (config.maxVerificationTime === undefined) config.maxVerificationTime = 7 * 24 * 3600 * 1000;
-    if (config.mustVerifyEmail === undefined) config.mustVerifyEmail = true;
+    if (this.app.config.users.verification_timeout === undefined) {
+      this.app.config.users.verification_timeout = 3600 * 1000;
+    }
+    if (this.app.config.users.verification_amount === undefined) {
+      this.app.config.users.verification_amount = 3;
+    }
+    if (this.app.config.users.password_reset_timeout === undefined) {
+      this.app.config.users.password_reset_timeout = 3600 * 1000;
+    }
+    if (this.app.config.users.password_reset_amount === undefined) {
+      this.app.config.users.password_reset_amount = 3;
+    }
 
-    this.config = config;
+    // default verification values
+    if (this.app.config.users.maxVerificationTime === undefined) {
+      this.app.config.users.maxVerificationTime = 7 * 24 * 3600 * 1000;
+    }
+    if (this.app.config.users.mustVerifyEmail === undefined) {
+      this.app.config.users.mustVerifyEmail = true;
+    }
 
     this.addJsonResponses('signupUser', require('./json_responses/signupUser'));
     this.addJsonResponses('verifyEmailResend', require('./json_responses/verifyEmailResend'));
@@ -48,15 +58,15 @@ export default class UserCore extends ExpressCoreBasic {
 
     // check if email should be verified
     let isEmailVerified = false;
-    if (this.config.mustVerifyEmail === false) {
+    if (this.app.config.users.mustVerifyEmail === false) {
       isEmailVerified = true;
     }
 
-    const password_hash = bcrypt.hashSync(password, 10);
+    const passwordHash = bcrypt.hashSync(password, 10);
 
-    const newUser = new this.models.User({
+    const newUser = new this.app.models.User({
       email,
-      password_hash,
+      passwordHash,
       isEmailVerified,
       verificationCode,
     });
@@ -74,7 +84,7 @@ export default class UserCore extends ExpressCoreBasic {
     if (!user.verificationResendAmount) {
       return false;
     }
-    return user.checkVerificationRequestRule(this.config);
+    return user.checkVerificationRequestRule(this.app.config.users);
   }
 
   /**
@@ -87,7 +97,7 @@ export default class UserCore extends ExpressCoreBasic {
     const result = user;
     result.verificationResendRequestDate = Date.now();
     result.verificationResendAmount += 1;
-    if (user.checkLastResendVerificationRequest(this.config)) {
+    if (user.checkLastResendVerificationRequest(this.app.config.users)) {
       result.verificationResendAmount = 1;
     }
 
@@ -104,7 +114,7 @@ export default class UserCore extends ExpressCoreBasic {
     if (!user.resetPasswordRequestsAmount) {
       return false;
     }
-    return user.checkResetPasswordRequestRule(this.config);
+    return user.checkResetPasswordRequestRule(this.app.config.users);
   }
 
   /**
@@ -119,9 +129,8 @@ export default class UserCore extends ExpressCoreBasic {
     result.resetPasswordRequestDate = Date.now();
     result.resetPasswordToken = crypto.randomBytes(64).toString('hex');
     result.resetPasswordRequestsAmount += 1;
-    /* @TODO make timeout configurable */
 
-    if (user.checkLastResetPasswordRequest(this.config)) {
+    if (user.checkLastResetPasswordRequest(this.app.config.users)) {
       result.resetPasswordRequestsAmount = 1;
     }
 
@@ -137,7 +146,7 @@ export default class UserCore extends ExpressCoreBasic {
    */
   async updateUserPassword(user, password) {
     const result = user;
-    result.password_hash = bcrypt.hashSync(password, 10);
+    result.passwordHash = bcrypt.hashSync(password, 10);
     result.resetPasswordIsRequested = false;
     result.resetPasswordRequestDate = null;
     result.resetPasswordRequestsAmount = 0;

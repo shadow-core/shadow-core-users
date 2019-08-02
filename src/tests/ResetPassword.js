@@ -8,7 +8,7 @@ const { expect } = chai;
 chai.use(chaiHttp);
 chai.use(chaiSubset);
 
-export default function ResetPassword(server, apiPrefix, models, options = {}) {
+export default function ResetPassword(app, options = {}) {
   let token = null;
   let authToken = null;
   if (options.testAuthentication === undefined) options.testAuthentication = false;
@@ -16,8 +16,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
   describe('Reset passwords endpoint', () => {
     describe('/users/reset_password/request', () => {
       it('must return 404 on get request', (done) => {
-        chai.request(server)
-          .get(`${apiPrefix}/users/reset_password/request`)
+        chai.request(app.server)
+          .get(`${options.apiPrefix}/users/reset_password/request`)
           .send()
           .end((err, res) => {
             res.should.have.status(404);
@@ -28,8 +28,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
       });
 
       it('must return error if no data is provided', (done) => {
-        chai.request(server)
-          .post(`${apiPrefix}/users/reset_password/request`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/reset_password/request`)
           .send()
           .end((err, res) => {
             res.should.have.status(422);
@@ -46,8 +46,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
 
       it('must return error email is not correct', (done) => {
         const data = { email: 'testemail' };
-        chai.request(server)
-          .post(`${apiPrefix}/users/reset_password/request`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/reset_password/request`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -64,8 +64,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
 
       it('must return error if email does not exist', (done) => {
         const data = { email: 'testemail@gmail.com' };
-        chai.request(server)
-          .post(`${apiPrefix}/users/reset_password/request`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/reset_password/request`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -81,7 +81,7 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
       });
 
       it('user data must be correct', (done) => {
-        models.User.findOne({ email: 'test@test.com' }).exec().then((user) => {
+        app.models.User.findOne({ email: 'test@test.com' }).exec().then((user) => {
           user._id.should.exist;
           user.resetPasswordIsRequested.should.equal(false);
           user.resetPasswordRequestsAmount.should.equal(0);
@@ -92,8 +92,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
 
       it('must return success - check trim()', (done) => {
         const data = { email: '      test@test.com      ' };
-        chai.request(server)
-          .post(`${apiPrefix}/users/reset_password/request`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/reset_password/request`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -106,8 +106,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
 
       it('must return success', (done) => {
         const data = { email: 'test@test.com' };
-        chai.request(server)
-          .post(`${apiPrefix}/users/reset_password/request`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/reset_password/request`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -120,8 +120,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
 
       it('must return success', (done) => {
         const data = { email: 'test@test.com' };
-        chai.request(server)
-          .post(`${apiPrefix}/users/reset_password/request`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/reset_password/request`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -134,8 +134,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
 
       it('must return error because too much requests', (done) => {
         const data = { email: 'test@test.com' };
-        chai.request(server)
-          .post(`${apiPrefix}/users/reset_password/request`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/reset_password/request`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(429);
@@ -147,7 +147,7 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
       });
 
       it('user data must be correct', (done) => {
-        models.User.findOne({ email: 'test@test.com' }).exec().then((user) => {
+        app.models.User.findOne({ email: 'test@test.com' }).exec().then((user) => {
           user._id.should.exist;
           user.resetPasswordIsRequested.should.equal(true);
           user.resetPasswordToken.should.exist;
@@ -159,8 +159,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
 
     describe('/users/reset_password/check', () => {
       it('must return 404 on get', (done) => {
-        chai.request(server)
-          .get(`${apiPrefix}/users/reset_password/check`)
+        chai.request(app.server)
+          .get(`${options.apiPrefix}/users/reset_password/check`)
           .send()
           .end((err, res) => {
             res.should.have.status(404);
@@ -171,8 +171,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
       });
 
       it('must return error if no data is provided', (done) => {
-        chai.request(server)
-          .post(`${apiPrefix}/users/reset_password/check`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/reset_password/check`)
           .send()
           .end((err, res) => {
             res.should.have.status(422);
@@ -187,8 +187,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
 
       it('must return error on random token', (done) => {
         const data = { token: 'somerandomtoken' };
-        chai.request(server)
-          .post(`${apiPrefix}/users/reset_password/check`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/reset_password/check`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(404);
@@ -203,8 +203,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
 
       it('success on real token', (done) => {
         const data = { token };
-        chai.request(server)
-          .post(`${apiPrefix}/users/reset_password/check`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/reset_password/check`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -217,8 +217,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
 
       it('success on real token with some spaces - trim should work', (done) => {
         const data = { token: `      ${token}   ` };
-        chai.request(server)
-          .post(`${apiPrefix}/users/reset_password/check`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/reset_password/check`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -232,8 +232,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
 
     describe('/users/reset_password', () => {
       it('must return 404 on get', (done) => {
-        chai.request(server)
-          .get(`${apiPrefix}/users/reset_password`)
+        chai.request(app.server)
+          .get(`${options.apiPrefix}/users/reset_password`)
           .send()
           .end((err, res) => {
             res.should.have.status(404);
@@ -244,8 +244,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
       });
 
       it('must return error on empty data', (done) => {
-        chai.request(server)
-          .post(`${apiPrefix}/users/reset_password`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/reset_password`)
           .send()
           .end((err, res) => {
             res.should.have.status(422);
@@ -263,8 +263,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
 
       it('must return error on incorrect token', (done) => {
         const data = { token: 'somerandomtoken' };
-        chai.request(server)
-          .post(`${apiPrefix}/users/reset_password`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/reset_password`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -282,8 +282,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
 
       it('must return error if no passwords are provided', (done) => {
         const data = { token };
-        chai.request(server)
-          .post(`${apiPrefix}/users/reset_password`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/reset_password`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -301,8 +301,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
 
       it('must return error if no passwords are provided but should find token - trim()', (done) => {
         const data = { token: `          ${token}   ` };
-        chai.request(server)
-          .post(`${apiPrefix}/users/reset_password`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/reset_password`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -320,8 +320,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
 
       it('must return error if password check is not provided', (done) => {
         const data = { token, password: 'test' };
-        chai.request(server)
-          .post(`${apiPrefix}/users/reset_password`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/reset_password`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -339,8 +339,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
 
       it('must return error if password is not provided', (done) => {
         const data = { token, passwordCheck: 'test' };
-        chai.request(server)
-          .post(`${apiPrefix}/users/reset_password`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/reset_password`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -358,8 +358,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
 
       it('must return error if passwords are not equal', (done) => {
         const data = { token, password: 'Test', passwordCheck: 'test' };
-        chai.request(server)
-          .post(`${apiPrefix}/users/reset_password`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/reset_password`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(422);
@@ -377,8 +377,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
 
       it('must return success', (done) => {
         const data = { token, password: 'password', passwordCheck: 'password' };
-        chai.request(server)
-          .post(`${apiPrefix}/users/reset_password`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/reset_password`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -391,8 +391,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
 
       it('must return error because we used token', (done) => {
         const data = { token, password: 'password', passwordCheck: 'password' };
-        chai.request(server)
-          .post(`${apiPrefix}/users/reset_password`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/reset_password`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(404);
@@ -406,7 +406,7 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
       });
 
       it('user data must be correct', (done) => {
-        models.User.findOne({ email: 'test@test.com' }).exec().then((user) => {
+        app.models.User.findOne({ email: 'test@test.com' }).exec().then((user) => {
           user._id.should.exist;
           user.resetPasswordIsRequested.should.equal(false);
           done();
@@ -419,8 +419,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
             email: 'test@test.com',
             password: 'test',
           };
-          chai.request(server)
-            .post(`${apiPrefix}/auth/user/token`)
+          chai.request(app.server)
+            .post(`${options.apiPrefix}/auth/user/token`)
             .send(data)
             .end((err, res) => {
               res.should.have.status(401);
@@ -433,8 +433,8 @@ export default function ResetPassword(server, apiPrefix, models, options = {}) {
             email: 'test@test.com',
             password: 'password',
           };
-          chai.request(server)
-            .post(`${apiPrefix}/auth/user/token`)
+          chai.request(app.server)
+            .post(`${options.apiPrefix}/auth/user/token`)
             .send(data)
             .end((err, res) => {
               res.should.have.status(200);

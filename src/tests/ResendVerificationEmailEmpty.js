@@ -8,12 +8,12 @@ const { expect } = chai;
 chai.use(chaiHttp);
 chai.use(chaiSubset);
 
-export default function ResendVerificationEmailEmpty(server, apiPrefix) {
+export default function ResendVerificationEmailEmpty(app, options = {}) {
   describe('Resend verification email endpoint', () => {
     describe('GET /users/verify_email/resend', () => {
       it('must return 404 - there is not verification process', (done) => {
-        chai.request(server)
-          .post(`${apiPrefix}/users/verify_email/resend`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/verify_email/resend`)
           .send()
           .end((err, res) => {
             res.should.have.status(404);

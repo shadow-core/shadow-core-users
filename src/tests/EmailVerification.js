@@ -8,15 +8,15 @@ const { expect } = chai;
 chai.use(chaiHttp);
 chai.use(chaiSubset);
 
-export default function EmailVerification(server, apiPrefix, models) {
+export default function EmailVerification(app, options = {}) {
   let verificationToken = '';
   let verificationToken2 = '';
 
   describe('User email verification endpoint', () => {
     describe('POST /users/verify_email', () => {
       it('must return 404 on get request', (done) => {
-        chai.request(server)
-          .get(`${apiPrefix}/users/verify_email`)
+        chai.request(app.server)
+          .get(`${options.apiPrefix}/users/verify_email`)
           .send()
           .end((err, res) => {
             res.should.have.status(404);
@@ -27,7 +27,7 @@ export default function EmailVerification(server, apiPrefix, models) {
       });
 
       it('user data must be correct', (done) => {
-        models.User.findOne({ email: 'test@test.com' }).exec().then((user) => {
+        app.models.User.findOne({ email: 'test@test.com' }).exec().then((user) => {
           user._id.should.exist;
           user.isEmailVerified.should.equal(false);
           user.verificationCode.should.exist;
@@ -37,8 +37,8 @@ export default function EmailVerification(server, apiPrefix, models) {
       });
 
       it('must return error if no token is provided', (done) => {
-        chai.request(server)
-          .post(`${apiPrefix}/users/verify_email`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/verify_email`)
           .send()
           .end((err, res) => {
             res.should.have.status(422);
@@ -53,8 +53,8 @@ export default function EmailVerification(server, apiPrefix, models) {
 
       it('must return error if token is incorrect', (done) => {
         const data = { verificationToken: 'testtoken' };
-        chai.request(server)
-          .post(`${apiPrefix}/users/verify_email`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/verify_email`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(404);
@@ -69,8 +69,8 @@ export default function EmailVerification(server, apiPrefix, models) {
 
       it('must return success for correct token', (done) => {
         const data = { verificationToken };
-        chai.request(server)
-          .post(`${apiPrefix}/users/verify_email`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/verify_email`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -82,7 +82,7 @@ export default function EmailVerification(server, apiPrefix, models) {
       });
 
       it('user data must be correct', (done) => {
-        models.User.findOne({ email: 'test2@test.com' }).exec().then((user) => {
+        app.models.User.findOne({ email: 'test2@test.com' }).exec().then((user) => {
           user._id.should.exist;
           user.isEmailVerified.should.equal(false);
           user.verificationCode.should.exist;
@@ -93,8 +93,8 @@ export default function EmailVerification(server, apiPrefix, models) {
 
       it('must return success for correct token - check trim()', (done) => {
         const data = { verificationToken: `   ${verificationToken2}    ` };
-        chai.request(server)
-          .post(`${apiPrefix}/users/verify_email`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/verify_email`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -107,8 +107,8 @@ export default function EmailVerification(server, apiPrefix, models) {
 
       it('it must return an error now since token was used', (done) => {
         const data = { verificationToken };
-        chai.request(server)
-          .post(`${apiPrefix}/users/verify_email`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/verify_email`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(404);
@@ -122,7 +122,7 @@ export default function EmailVerification(server, apiPrefix, models) {
       });
 
       it('user data must be correct', (done) => {
-        models.User.findOne({ email: 'test@test.com' }).exec().then((user) => {
+        app.models.User.findOne({ email: 'test@test.com' }).exec().then((user) => {
           user._id.should.exist;
           user.isEmailVerified.should.equal(true);
           user.verificationCode.should.exist;

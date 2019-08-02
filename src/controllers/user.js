@@ -10,14 +10,13 @@ import UserCore from '../UserCore';
  */
 export default class UserController extends BasicController {
   /**
-   * Constructor. Pass models to it.
+   * Constructor. Pass application to it.
    *
-   * @param {Object} models Object with applications models.
-   * @param {Object} config Additional configuration things.
+   * @param {Object} app The main application with models, config, etc
    */
-  constructor(models, config = {}) {
-    super(models, config);
-    this.core = new UserCore(this.models, this.config);
+  constructor(app) {
+    super(app);
+    this.core = new UserCore(app);
   }
 
   /**
@@ -51,7 +50,8 @@ export default class UserController extends BasicController {
 
     // return error if too much requests
     if (this.core.checkTooMuchRequests(user)) {
-      return this.returnError(this.core.jsonResponses.verifyEmailResend.errors.email.requests, res, 429);
+      return this.returnError(this.core.jsonResponses.verifyEmailResend.errors.email.requests,
+        res, 429);
     }
 
     // send email, add counter and return success
@@ -71,7 +71,7 @@ export default class UserController extends BasicController {
     const actionParams = this.getMatchedData(req);
 
     // find user by token
-    const user = await this.core.models.User
+    const user = await this.core.app.models.User
       .getUserByVerificationToken(actionParams.verificationToken);
     if (!user) {
       return this.returnNotFoundError(res, 'verificationToken', 'Email verification token is incorrect or outdated');
@@ -114,7 +114,7 @@ export default class UserController extends BasicController {
   async resetPasswordAction(req, res) {
     const actionParams = this.getMatchedData(req);
 
-    const user = await this.core.models.User.getUserByPasswordResetToken(actionParams.token);
+    const user = await this.core.app.models.User.getUserByPasswordResetToken(actionParams.token);
     if (!user) {
       return this.returnNotFoundError(res, 'resetPasswordToken', 'Token is incorrect or already has been used');
     }
@@ -134,7 +134,7 @@ export default class UserController extends BasicController {
   async resetPasswordCheckAction(req, res) {
     const actionParams = this.getMatchedData(req);
 
-    const user = await this.core.models.User.getUserByPasswordResetToken(actionParams.token);
+    const user = await this.core.app.models.User.getUserByPasswordResetToken(actionParams.token);
     if (!user) {
       return this.returnNotFoundError(res, 'resetPasswordToken', 'Token is incorrect or already has been used');
     }
