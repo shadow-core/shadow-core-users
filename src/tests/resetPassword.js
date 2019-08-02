@@ -8,9 +8,10 @@ const { expect } = chai;
 chai.use(chaiHttp);
 chai.use(chaiSubset);
 
-export default function ExpressCoreUsersTestsResetPassword(server, apiPrefix, models) {
+export default function ExpressCoreUsersTestsResetPassword(server, apiPrefix, models, options = {}) {
   let token = null;
   let authToken = null;
+  if (options.testAuthentication === undefined) options.testAuthentication = false;
 
   describe('Reset passwords endpoint', () => {
     describe('/users/reset_password/request', () => {
@@ -412,40 +413,38 @@ export default function ExpressCoreUsersTestsResetPassword(server, apiPrefix, mo
         });
       });
 
-      /*
-      it('should NOT authorize with old password', (done) => {
-        const data = {
-          email: 'test@test.com',
-          password: 'test',
-        };
-        chai.request(server)
-          .post('${apiPrefix}/auth/user/token')
-          .send(data)
-          .end((err, res) => {
-            res.should.have.status(401);
-            done();
-          });
-      });
-      */
+      if (options.testAuthentication) {
+        it('should NOT authorize with old password', (done) => {
+          const data = {
+            email: 'test@test.com',
+            password: 'test',
+          };
+          chai.request(server)
+            .post(`${apiPrefix}/auth/user/token`)
+            .send(data)
+            .end((err, res) => {
+              res.should.have.status(401);
+              done();
+            });
+        });
 
-      /*
-      it('should authorize with new password', (done) => {
-        const data = {
-          email: 'test@test.com',
-          password: 'password',
-        };
-        chai.request(server)
-          .post('${apiPrefix}/auth/user/token')
-          .send(data)
-          .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.a('object');
-            res.body.should.have.property('token');
-            authToken = res.body.token;
-            done();
-          });
-      });
-      */
+        it('should authorize with new password', (done) => {
+          const data = {
+            email: 'test@test.com',
+            password: 'password',
+          };
+          chai.request(server)
+            .post(`${apiPrefix}/auth/user/token`)
+            .send(data)
+            .end((err, res) => {
+              res.should.have.status(200);
+              res.body.should.be.a('object');
+              res.body.should.have.property('token');
+              authToken = res.body.token;
+              done();
+            });
+        });
+      }
 
       /*
       it('change password back', (done) => {
