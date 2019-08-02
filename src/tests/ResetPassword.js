@@ -8,7 +8,7 @@ const { expect } = chai;
 chai.use(chaiHttp);
 chai.use(chaiSubset);
 
-export default function ExpressCoreUsersTestsResetPassword(server, apiPrefix, models, options = {}) {
+export default function ResetPassword(server, apiPrefix, models, options = {}) {
   let token = null;
   let authToken = null;
   if (options.testAuthentication === undefined) options.testAuthentication = false;

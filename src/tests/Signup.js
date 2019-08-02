@@ -8,7 +8,7 @@ const { expect } = chai;
 chai.use(chaiHttp);
 chai.use(chaiSubset);
 
-export default function ExpressCoreUsersTestsSignup(server, apiPrefix, models, noVerif = false) {
+export default function Signup(server, apiPrefix, models, noVerif = false) {
   describe('User signup endpoint', () => {
     describe('GET /users/signup', () => {
       it('must return 404 on get request', (done) => {

@@ -1,14 +1,14 @@
 import { BasicController } from 'shadow-core-basic';
-import ExpressCoreUsers from '../ExpressCoreUsers';
+import UserCore from '../UserCore';
 // import sendVerificationEmail from '../../mails/verification_email';
 // import sendResetPasswordRequestEmail from '../../mails/password_reset_email';
 
 /**
- * @class UsersController
+ * @class UserController
  * @classdesc UsersController has all required method for users - registration, email verification,
  * password reset
  */
-export default class UsersController extends BasicController {
+export default class UserController extends BasicController {
   /**
    * Constructor. Pass models to it.
    *
@@ -17,7 +17,7 @@ export default class UsersController extends BasicController {
    */
   constructor(models, config = {}) {
     super(models, config);
-    this.core = new ExpressCoreUsers(this.models, this.config);
+    this.core = new UserCore(this.models, this.config);
   }
 
   /**

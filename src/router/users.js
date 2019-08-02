@@ -1,9 +1,5 @@
-import ExpressCoreUsersController from '../controllers/user';
-import {
-  SignupUserValidation, VerifyEmailResendValidation,
-  VerifyEmailValidation, ResetPasswordRequestValidation,
-  ResetPasswordValidation, ResetPasswordCheckValidation,
-} from '../validations';
+import UserController from '../controllers/user';
+import UserValidations from '../validations';
 
 const asyncHandler = require('express-async-handler');
 
@@ -15,21 +11,21 @@ const asyncHandler = require('express-async-handler');
  * @param {Object} config Additional configuration
  */
 export default function (router, models, config) {
-  const usersController = new ExpressCoreUsersController(models, config);
+  const userController = new UserController(models, config);
 
-  const signupUserValidation = new SignupUserValidation(models);
-  const verifyEmailResendValidation = new VerifyEmailResendValidation(models);
-  const verifyEmailValidation = new VerifyEmailValidation(models);
-  const resetPasswordRequestValidation = new ResetPasswordRequestValidation(models);
-  const resetPasswordValidation = new ResetPasswordValidation(models);
-  const resetPasswordCheckValidation = new ResetPasswordCheckValidation(models);
+  const signupUserValidation = new UserValidations.SignupUserValidation(models);
+  const verifyEmailResendValidation = new UserValidations.VerifyEmailResendValidation(models);
+  const verifyEmailValidation = new UserValidations.VerifyEmailValidation(models);
+  const resetPasswordRequestValidation = new UserValidations.ResetPasswordRequestValidation(models);
+  const resetPasswordValidation = new UserValidations.ResetPasswordValidation(models);
+  const resetPasswordCheckValidation = new UserValidations.ResetPasswordCheckValidation(models);
 
   router
     .route('/users/signup')
     .post(
       signupUserValidation.validators(),
-      usersController.validate.bind(usersController),
-      asyncHandler(usersController.signupUserAction.bind(usersController)),
+      userController.validate.bind(userController),
+      asyncHandler(userController.signupUserAction.bind(userController)),
     );
 
 
@@ -40,8 +36,8 @@ export default function (router, models, config) {
       .route('/users/verify_email/resend')
       .post(
         verifyEmailResendValidation.validators(),
-        usersController.validate.bind(usersController),
-        asyncHandler(usersController.verifyEmailResendAction.bind(usersController)),
+        userController.validate.bind(userController),
+        asyncHandler(userController.verifyEmailResendAction.bind(userController)),
       );
 
     // verify email
@@ -49,8 +45,8 @@ export default function (router, models, config) {
       .route('/users/verify_email')
       .post(
         verifyEmailValidation.validators(),
-        usersController.validate.bind(usersController),
-        asyncHandler(usersController.verifyEmailAction.bind(usersController)),
+        userController.validate.bind(userController),
+        asyncHandler(userController.verifyEmailAction.bind(userController)),
       );
   }
 
@@ -59,8 +55,8 @@ export default function (router, models, config) {
     .route('/users/reset_password/request')
     .post(
       resetPasswordRequestValidation.validators(),
-      usersController.validate.bind(usersController),
-      asyncHandler(usersController.resetPasswordRequestAction.bind(usersController)),
+      userController.validate.bind(userController),
+      asyncHandler(userController.resetPasswordRequestAction.bind(userController)),
     );
 
   // reset password
@@ -68,8 +64,8 @@ export default function (router, models, config) {
     .route('/users/reset_password')
     .post(
       resetPasswordValidation.validators(),
-      usersController.validate.bind(usersController),
-      asyncHandler(usersController.resetPasswordAction.bind(usersController)),
+      userController.validate.bind(userController),
+      asyncHandler(userController.resetPasswordAction.bind(userController)),
     );
 
   // check reset password token
@@ -77,7 +73,7 @@ export default function (router, models, config) {
     .route('/users/reset_password/check')
     .post(
       resetPasswordCheckValidation.validators(),
-      usersController.validate.bind(usersController),
-      asyncHandler(usersController.resetPasswordCheckAction.bind(usersController)),
+      userController.validate.bind(userController),
+      asyncHandler(userController.resetPasswordCheckAction.bind(userController)),
     );
 }

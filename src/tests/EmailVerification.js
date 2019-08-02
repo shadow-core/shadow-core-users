@@ -8,7 +8,7 @@ const { expect } = chai;
 chai.use(chaiHttp);
 chai.use(chaiSubset);
 
-export default function TestExpressCoreUsersEmailVerification(server, apiPrefix, models) {
+export default function EmailVerification(server, apiPrefix, models) {
   let verificationToken = '';
   let verificationToken2 = '';
 

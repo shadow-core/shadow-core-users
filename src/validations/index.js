@@ -5,7 +5,7 @@ import ResetPasswordRequestValidation from './ResetPasswordRequestValidation';
 import ResetPasswordValidation from './ResetPasswordValidation';
 import ResetPasswordCheckValidation from './ResetPasswordCheckValidation';
 
-export {
+export default {
   SignupUserValidation,
   VerifyEmailResendValidation,
   VerifyEmailValidation,

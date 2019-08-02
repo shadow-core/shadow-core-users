@@ -8,7 +8,7 @@ const { expect } = chai;
 chai.use(chaiHttp);
 chai.use(chaiSubset);
 
-export default function TestExpressCoreUsersEmailVerificationEmpty(server, apiPrefix, models) {
+export default function EmailVerificationEmpty(server, apiPrefix, models) {
   describe('User email verification endpoint', () => {
     describe('POST /users/verify_email', () => {
       it('must return 404, there not verification process', (done) => {

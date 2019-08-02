@@ -4,10 +4,10 @@ const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 
 /**
- * @class ExpressCoreUsers
+ * @class UserCore
  * @classdesc This is main class with all required methods for user actions.
  */
-export default class ExpressCoreUsers extends ExpressCoreBasic {
+export default class UserCore extends ExpressCoreBasic {
   /**
    * Prepare json responses and get list if models.
    *

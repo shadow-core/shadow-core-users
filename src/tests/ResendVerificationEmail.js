@@ -8,7 +8,7 @@ const { expect } = chai;
 chai.use(chaiHttp);
 chai.use(chaiSubset);
 
-export default function ExpressCoreUsersTestsResendVerificationEmail(server, apiPrefix) {
+export default function ResendVerificationEmail(server, apiPrefix) {
   describe('Resend verification email endpoint', () => {
     describe('GET /users/verify_email/resend', () => {
       it('must return 404 on get request', (done) => {
