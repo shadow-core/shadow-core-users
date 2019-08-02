@@ -8,7 +8,9 @@ const { expect } = chai;
 chai.use(chaiHttp);
 chai.use(chaiSubset);
 
-export default function Signup(server, apiPrefix, models, noVerif = false) {
+export default function Signup(server, apiPrefix, models, options = {}) {
+  if (options.noVerif === undefined) options.noVerif = false;
+
   describe('User signup endpoint', () => {
     describe('GET /users/signup', () => {
       it('must return 404 on get request', (done) => {
@@ -188,7 +190,7 @@ export default function Signup(server, apiPrefix, models, noVerif = false) {
         models.User.findOne({ email: 'test@test.com' }).exec().then((user) => {
           user._id.should.exist;
           user.email.should.exist.eq('test@test.com');
-          if (noVerif) {
+          if (options.noVerif) {
             user.isEmailVerified.should.exist.eq(true);
           } else {
             user.isEmailVerified.should.exist.eq(false);
@@ -218,7 +220,7 @@ export default function Signup(server, apiPrefix, models, noVerif = false) {
         models.User.findOne({ email: 'test2@test.com' }).exec().then((user) => {
           user._id.should.exist;
           user.email.should.exist.eq('test2@test.com');
-          if (noVerif) {
+          if (options.noVerif) {
             user.isEmailVerified.should.exist.eq(true);
           } else {
             user.isEmailVerified.should.exist.eq(false);
