@@ -104,33 +104,21 @@ export default function ResetPassword(app, options = {}) {
           });
       });
 
-      it('must return success', (done) => {
-        const data = { email: 'test@test.com' };
-        chai.request(app.server)
-          .post(`${options.apiPrefix}/users/reset_password/request`)
-          .send(data)
-          .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.have.property('success').eq(true);
-            res.body.should.have.property('code').eq(100);
-            res.body.should.have.property('message');
-            done();
-          });
-      });
-
-      it('must return success', (done) => {
-        const data = { email: 'test@test.com' };
-        chai.request(app.server)
-          .post(`${options.apiPrefix}/users/reset_password/request`)
-          .send(data)
-          .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.have.property('success').eq(true);
-            res.body.should.have.property('code').eq(100);
-            res.body.should.have.property('message');
-            done();
-          });
-      });
+      for (let i = 0; i < app.config.users.password_reset_amount - 1; i += 1) {
+        it('must return success', (done) => {
+          const data = { email: 'test@test.com' };
+          chai.request(app.server)
+            .post(`${options.apiPrefix}/users/reset_password/request`)
+            .send(data)
+            .end((err, res) => {
+              res.should.have.status(200);
+              res.body.should.have.property('success').eq(true);
+              res.body.should.have.property('code').eq(100);
+              res.body.should.have.property('message');
+              done();
+            });
+        });
+      }
 
       it('must return error because too much requests', (done) => {
         const data = { email: 'test@test.com' };
@@ -141,6 +129,39 @@ export default function ResetPassword(app, options = {}) {
             res.should.have.status(429);
             res.body.should.have.property('code').eq(429);
             res.body.should.have.property('success').eq(false);
+            res.body.should.have.property('message');
+            done();
+          });
+      });
+
+      it('user data must be correct', (done) => {
+        app.models.User.findOne({ email: 'test@test.com' }).exec().then((user) => {
+          user._id.should.exist;
+          user.resetPasswordIsRequested.should.equal(true);
+          user.resetPasswordToken.should.exist;
+          token = user.resetPasswordToken;
+          done();
+        });
+      });
+
+      it('we should move date back one hour', (done) => {
+        app.models.User.findOne({ email: 'test@test.com' }).exec().then(async (user) => {
+          user._id.should.exist;
+          user.resetPasswordRequestDate -= (app.config.users.password_reset_timeout + 100);
+          await user.save();
+          done();
+        });
+      });
+
+      it('must return success again - we changed the timeout', (done) => {
+        const data = { email: 'test@test.com' };
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/users/reset_password/request`)
+          .send(data)
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.have.property('success').eq(true);
+            res.body.should.have.property('code').eq(100);
             res.body.should.have.property('message');
             done();
           });

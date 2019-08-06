@@ -33,7 +33,6 @@ export default function (app) {
 
   // there's not need for these routes if there's no verification by email
   if (app.config.users.mustVerifyEmail !== false) {
-    console.log(123);
     // resend verification email
     app.router
       .route('/users/verify_email/resend')
