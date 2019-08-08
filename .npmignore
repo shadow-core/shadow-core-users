@@ -1,2 +1,5 @@
 .idea
+.gitignore
+.babelrc
+.eslintrc.yml
 /src/

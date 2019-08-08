@@ -1,6 +1,6 @@
 import { BasicValidatorInterface } from 'shadow-core-basic';
-import GetPasswordCheckValidatorNotEqual from './validators/GetPasswordCheckValidatorNotEqual';
-import GetEmailValidatorNotUnique from './validators/GetEmailValidatorNotUnique';
+import PasswordCheckValidatorNotEqual from './validators/PasswordCheckValidatorNotEqual';
+import EmailValidatorNotUnique from './validators/EmailValidatorNotUnique';
 
 const { body } = require('express-validator/check');
 const jsonResponses = require('../json_responses/signupUser');
@@ -21,7 +21,7 @@ export default class SignupUserValidation extends BasicValidatorInterface {
       body('email').trim()
         .not().isEmpty().withMessage(jsonResponses.errors.email.empty)
         .isEmail().withMessage(jsonResponses.errors.email.format)
-        .custom(GetEmailValidatorNotUnique(this))
+        .custom(EmailValidatorNotUnique(this))
         .withMessage(jsonResponses.errors.email.notUnique),
 
       // password
@@ -29,7 +29,7 @@ export default class SignupUserValidation extends BasicValidatorInterface {
 
       // password check
       body('passwordCheck').not().isEmpty().withMessage(jsonResponses.errors.passwordCheck.empty)
-        .custom(GetPasswordCheckValidatorNotEqual())
+        .custom(PasswordCheckValidatorNotEqual())
         .withMessage(jsonResponses.errors.passwordCheck.notEqual),
     ];
   }

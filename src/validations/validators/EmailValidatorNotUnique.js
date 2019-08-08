@@ -6,7 +6,7 @@ import validator from 'validator';
  * @return {function(*=): Promise<any>}
  * @constructor
  */
-export default function GetEmailValidatorNotUnique(validation) {
+export default function EmailValidatorNotUnique(validation) {
   return ((value, { req }) => new Promise((resolve, reject) => {
     if (!value) {
       return resolve();

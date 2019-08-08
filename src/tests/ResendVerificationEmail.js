@@ -37,6 +37,7 @@ export default function ResendVerificationEmail(app, options = {}) {
             res.body.errors.should.containSubset([{ code: 1, param: 'email' }]);
             res.body.errors.should.containSubset([{ code: 2, param: 'email' }]);
             res.body.errors.should.not.containSubset([{ code: 3, param: 'email' }]);
+            res.body.errors.should.not.containSubset([{ code: 4, param: 'email' }]);
             done();
           });
       });
@@ -55,6 +56,7 @@ export default function ResendVerificationEmail(app, options = {}) {
             res.body.errors.should.not.containSubset([{ code: 1, param: 'email' }]);
             res.body.errors.should.containSubset([{ code: 2, param: 'email' }]);
             res.body.errors.should.not.containSubset([{ code: 3, param: 'email' }]);
+            res.body.errors.should.not.containSubset([{ code: 4, param: 'email' }]);
             done();
           });
       });
@@ -73,6 +75,7 @@ export default function ResendVerificationEmail(app, options = {}) {
             res.body.errors.should.not.containSubset([{ code: 1, param: 'email' }]);
             res.body.errors.should.not.containSubset([{ code: 2, param: 'email' }]);
             res.body.errors.should.containSubset([{ code: 3, param: 'email' }]);
+            res.body.errors.should.not.containSubset([{ code: 4, param: 'email' }]);
             done();
           });
       });

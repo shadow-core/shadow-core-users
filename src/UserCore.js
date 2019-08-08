@@ -9,7 +9,7 @@ const bcrypt = require('bcryptjs');
  */
 export default class UserCore extends ExpressCoreBasic {
   /**
-   * UserCore consttructor.
+   * UserCore constructor.
    *
    * @param {Object} app
    */
