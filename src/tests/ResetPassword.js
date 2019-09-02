@@ -467,26 +467,26 @@ export default function ResetPassword(app, options = {}) {
         });
       }
 
-      /*
-      it('change password back', (done) => {
-        const data = {
-          old_password: 'password',
-          new_password: 'test',
-          new_password_check: 'test',
-        };
-        chai.request(server)
-          .post('${apiPrefix}/profile/change_password')
-          .set('Authorization', `Bearer ${authToken}`)
-          .send(data)
-          .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.have.property('success').eq(true);
-            res.body.should.have.property('code').eq(100);
-            res.body.should.have.property('message');
-            done();
-          });
-      });
-      */
+      if (options.hasProfile) {
+        it('change password back', (done) => {
+          const data = {
+            oldPassword: 'password',
+            newPassword: 'test',
+            newPasswordCheck: 'test',
+          };
+          chai.request(app.server)
+            .post(`${options.apiPrefix}/profile/change_password`)
+            .set('Authorization', `Bearer ${authToken}`)
+            .send(data)
+            .end((err, res) => {
+              res.should.have.status(200);
+              res.body.should.have.property('success').eq(true);
+              res.body.should.have.property('code').eq(100);
+              res.body.should.have.property('message');
+              done();
+            });
+        });
+      }
     });
   });
 }
