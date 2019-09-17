@@ -153,4 +153,18 @@ export default class UserCore extends ExpressCoreBasic {
     result.resetPasswordToken = null;
     await result.save();
   }
+
+  /**
+   * Send verification email.
+   */
+  sendVerificationEmail(user) {
+    this.app.config.users.mails.sendVerificationEmail(user, this.app);
+  }
+
+  /**
+   * Send password reset request email.
+   */
+  sendResetPasswordRequestEmail(user) {
+    this.app.config.users.mails.sendResetPasswordRequestEmail(user, this.app);
+  }
 }

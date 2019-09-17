@@ -1,7 +1,5 @@
 import { BasicController } from 'shadow-core-basic';
 import UserCore from '../UserCore';
-// import sendVerificationEmail from '../../mails/verification_email';
-// import sendResetPasswordRequestEmail from '../../mails/password_reset_email';
 
 /**
  * @class UserController
@@ -33,8 +31,8 @@ export default class UserController extends BasicController {
   async signupUserAction(req, res) {
     const actionParams = this.getMatchedData(req);
 
-    await this.core.ProcessSignUpUser(actionParams.email, actionParams.password);
-    // sendVerificationEmail(newUser);
+    const newUser = await this.core.ProcessSignUpUser(actionParams.email, actionParams.password);
+    this.core.sendVerificationEmail(newUser);
     return this.returnSuccess(this.core.getJsonResponse('signupUser', 'success'), res);
   }
 
@@ -56,7 +54,7 @@ export default class UserController extends BasicController {
 
     // send email, add counter and return success
     await this.core.updateResendVerification(user);
-    // sendVerificationEmail(user);
+    this.core.sendVerificationEmail(user);
     return this.returnSuccess(this.core.getJsonResponse('verifyEmailResend', 'success'), res);
   }
 
@@ -100,7 +98,7 @@ export default class UserController extends BasicController {
 
     // seems like we can send reset password
     await this.core.prepareResetPassword(user);
-    // sendResetPasswordRequestEmail(user);
+    this.core.sendResetPasswordRequestEmail(user);
     return this.returnSuccess(this.core.getJsonResponse('resetPasswordRequest', 'success'), res);
   }
 
