@@ -6,7 +6,7 @@
   "license": "ISC",
   "scripts": {
     "build": "npx babel src --out-dir lib --source-maps inline --copy-files --delete-dir-on-start",
-    "prepublish": "npm run build",
+    "prepublishOnly": "npm run build",
     "eslint": "npx eslint ./src",
     "eslint-fix": "npx eslint ./src --fix"
   },
