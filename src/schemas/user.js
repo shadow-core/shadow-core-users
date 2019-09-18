@@ -63,9 +63,14 @@ UserSchema.methods = {
    * @todo should check this one too along with disabling verification.
    * @return {boolean}
    */
-  checkEmailVerified() {
+  checkEmailVerified(app) {
+    // there's no need to verify if we don't want to verify
+    if (app.config.users.mustVerifyEmail !== true) {
+      return true;
+    }
+    // but if there's need...
     const diffTime = Date.now() - this.registrationDate.getTime();
-    const maxDiffTime = 7 * 24 * 3600 * 1000;
+    const maxDiffTime = app.config.users.maxVerificationTime;
     if (diffTime > maxDiffTime
       && this.isEmailVerified === false) {
       return false;

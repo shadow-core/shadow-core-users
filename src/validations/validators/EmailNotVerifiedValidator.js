@@ -6,6 +6,6 @@ export default function EmailVerifiedValidator(validation) {
     if (!validation.user) {
       return true;
     }
-    return (validation.user.checkEmailVerified());
+    return (validation.user.checkEmailVerified(validation.app));
   });
 }
