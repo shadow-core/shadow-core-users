@@ -3,7 +3,7 @@ import UserCore from './UserCore';
 import UserValidations from './validations';
 import UserController from './controllers/user';
 import UserSchema from './schemas/user';
-import UserRouter from './router/users';
+import UserRouter from './router/UserRouter';
 
 import UserTests from './tests';
 
